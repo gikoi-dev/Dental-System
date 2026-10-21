@@ -14,6 +14,8 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as RecoverAccountRouteImport } from './routes/recover-account'
 import { Route as StaffRouteImport } from './routes/staff'
+import { Route as StaffDashboardRouteImport } from './routes/staff.dashboard'
+import { Route as StaffPatientsIndexRouteImport } from './routes/staff.patients.index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,20 +42,34 @@ const StaffRoute = StaffRouteImport.update({
   path: '/staff',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StaffDashboardRoute = StaffDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => StaffRoute,
+} as any)
+const StaffPatientsIndexRoute = StaffPatientsIndexRouteImport.update({
+  id: '/patients/',
+  path: '/patients/',
+  getParentRoute: () => StaffRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/login': typeof LoginRoute
   '/recover-account': typeof RecoverAccountRoute
-  '/staff': typeof StaffRoute
+  '/staff': typeof StaffRouteWithChildren
+  '/staff/dashboard': typeof StaffDashboardRoute
+  '/staff/patients/': typeof StaffPatientsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/login': typeof LoginRoute
   '/recover-account': typeof RecoverAccountRoute
-  '/staff': typeof StaffRoute
+  '/staff': typeof StaffRouteWithChildren
+  '/staff/dashboard': typeof StaffDashboardRoute
+  '/staff/patients': typeof StaffPatientsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -61,14 +77,38 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/login': typeof LoginRoute
   '/recover-account': typeof RecoverAccountRoute
-  '/staff': typeof StaffRoute
+  '/staff': typeof StaffRouteWithChildren
+  '/staff/dashboard': typeof StaffDashboardRoute
+  '/staff/patients/': typeof StaffPatientsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/login' | '/recover-account' | '/staff'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/login'
+    | '/recover-account'
+    | '/staff'
+    | '/staff/dashboard'
+    | '/staff/patients/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/login' | '/recover-account' | '/staff'
-  id: '__root__' | '/' | '/admin' | '/login' | '/recover-account' | '/staff'
+  to:
+    | '/'
+    | '/admin'
+    | '/login'
+    | '/recover-account'
+    | '/staff'
+    | '/staff/dashboard'
+    | '/staff/patients'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/login'
+    | '/recover-account'
+    | '/staff'
+    | '/staff/dashboard'
+    | '/staff/patients/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -76,7 +116,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   LoginRoute: typeof LoginRoute
   RecoverAccountRoute: typeof RecoverAccountRoute
-  StaffRoute: typeof StaffRoute
+  StaffRoute: typeof StaffRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -116,15 +156,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StaffRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/staff/dashboard': {
+      id: '/staff/dashboard'
+      path: '/dashboard'
+      fullPath: '/staff/dashboard'
+      preLoaderRoute: typeof StaffDashboardRouteImport
+      parentRoute: typeof StaffRoute
+    }
+    '/staff/patients/': {
+      id: '/staff/patients/'
+      path: '/patients'
+      fullPath: '/staff/patients/'
+      preLoaderRoute: typeof StaffPatientsIndexRouteImport
+      parentRoute: typeof StaffRoute
+    }
   }
 }
+
+interface StaffRouteChildren {
+  StaffDashboardRoute: typeof StaffDashboardRoute
+  StaffPatientsIndexRoute: typeof StaffPatientsIndexRoute
+}
+
+const StaffRouteChildren: StaffRouteChildren = {
+  StaffDashboardRoute: StaffDashboardRoute,
+  StaffPatientsIndexRoute: StaffPatientsIndexRoute,
+}
+
+const StaffRouteWithChildren = StaffRoute._addFileChildren(StaffRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
   LoginRoute: LoginRoute,
   RecoverAccountRoute: RecoverAccountRoute,
-  StaffRoute: StaffRoute,
+  StaffRoute: StaffRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
