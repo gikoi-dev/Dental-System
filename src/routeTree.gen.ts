@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as RecoverAccountRouteImport } from './routes/recover-account'
 import { Route as StaffRouteImport } from './routes/staff'
 
 const IndexRoute = IndexRouteImport.update({
@@ -23,6 +25,16 @@ const AdminRoute = AdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RecoverAccountRoute = RecoverAccountRouteImport.update({
+  id: '/recover-account',
+  path: '/recover-account',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const StaffRoute = StaffRouteImport.update({
   id: '/staff',
   path: '/staff',
@@ -32,30 +44,38 @@ const StaffRoute = StaffRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/login': typeof LoginRoute
+  '/recover-account': typeof RecoverAccountRoute
   '/staff': typeof StaffRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/login': typeof LoginRoute
+  '/recover-account': typeof RecoverAccountRoute
   '/staff': typeof StaffRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/login': typeof LoginRoute
+  '/recover-account': typeof RecoverAccountRoute
   '/staff': typeof StaffRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/staff'
+  fullPaths: '/' | '/admin' | '/login' | '/recover-account' | '/staff'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/staff'
-  id: '__root__' | '/' | '/admin' | '/staff'
+  to: '/' | '/admin' | '/login' | '/recover-account' | '/staff'
+  id: '__root__' | '/' | '/admin' | '/login' | '/recover-account' | '/staff'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
+  LoginRoute: typeof LoginRoute
+  RecoverAccountRoute: typeof RecoverAccountRoute
   StaffRoute: typeof StaffRoute
 }
 
@@ -75,6 +95,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recover-account': {
+      id: '/recover-account'
+      path: '/recover-account'
+      fullPath: '/recover-account'
+      preLoaderRoute: typeof RecoverAccountRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/staff': {
       id: '/staff'
       path: '/staff'
@@ -88,6 +122,8 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
+  LoginRoute: LoginRoute,
+  RecoverAccountRoute: RecoverAccountRoute,
   StaffRoute: StaffRoute,
 }
 export const routeTree = rootRouteImport
