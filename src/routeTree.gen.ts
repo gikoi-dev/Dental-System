@@ -15,7 +15,9 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as RecoverAccountRouteImport } from './routes/recover-account'
 import { Route as StaffRouteImport } from './routes/staff'
 import { Route as StaffDashboardRouteImport } from './routes/staff.dashboard'
+import { Route as StaffOdontogramPatientIdRouteImport } from './routes/staff.odontogram.$patientId'
 import { Route as StaffPatientsIndexRouteImport } from './routes/staff.patients.index'
+import { Route as StaffPatientsIdRouteImport } from './routes/staff.patients.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -47,9 +49,20 @@ const StaffDashboardRoute = StaffDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => StaffRoute,
 } as any)
+const StaffOdontogramPatientIdRoute =
+  StaffOdontogramPatientIdRouteImport.update({
+    id: '/odontogram/$patientId',
+    path: '/odontogram/$patientId',
+    getParentRoute: () => StaffRoute,
+  } as any)
 const StaffPatientsIndexRoute = StaffPatientsIndexRouteImport.update({
   id: '/patients/',
   path: '/patients/',
+  getParentRoute: () => StaffRoute,
+} as any)
+const StaffPatientsIdRoute = StaffPatientsIdRouteImport.update({
+  id: '/patients/$id',
+  path: '/patients/$id',
   getParentRoute: () => StaffRoute,
 } as any)
 
@@ -60,6 +73,8 @@ export interface FileRoutesByFullPath {
   '/recover-account': typeof RecoverAccountRoute
   '/staff': typeof StaffRouteWithChildren
   '/staff/dashboard': typeof StaffDashboardRoute
+  '/staff/odontogram/$patientId': typeof StaffOdontogramPatientIdRoute
+  '/staff/patients/$id': typeof StaffPatientsIdRoute
   '/staff/patients/': typeof StaffPatientsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -69,6 +84,8 @@ export interface FileRoutesByTo {
   '/recover-account': typeof RecoverAccountRoute
   '/staff': typeof StaffRouteWithChildren
   '/staff/dashboard': typeof StaffDashboardRoute
+  '/staff/odontogram/$patientId': typeof StaffOdontogramPatientIdRoute
+  '/staff/patients/$id': typeof StaffPatientsIdRoute
   '/staff/patients': typeof StaffPatientsIndexRoute
 }
 export interface FileRoutesById {
@@ -79,6 +96,8 @@ export interface FileRoutesById {
   '/recover-account': typeof RecoverAccountRoute
   '/staff': typeof StaffRouteWithChildren
   '/staff/dashboard': typeof StaffDashboardRoute
+  '/staff/odontogram/$patientId': typeof StaffOdontogramPatientIdRoute
+  '/staff/patients/$id': typeof StaffPatientsIdRoute
   '/staff/patients/': typeof StaffPatientsIndexRoute
 }
 export interface FileRouteTypes {
@@ -90,6 +109,8 @@ export interface FileRouteTypes {
     | '/recover-account'
     | '/staff'
     | '/staff/dashboard'
+    | '/staff/odontogram/$patientId'
+    | '/staff/patients/$id'
     | '/staff/patients/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -99,6 +120,8 @@ export interface FileRouteTypes {
     | '/recover-account'
     | '/staff'
     | '/staff/dashboard'
+    | '/staff/odontogram/$patientId'
+    | '/staff/patients/$id'
     | '/staff/patients'
   id:
     | '__root__'
@@ -108,6 +131,8 @@ export interface FileRouteTypes {
     | '/recover-account'
     | '/staff'
     | '/staff/dashboard'
+    | '/staff/odontogram/$patientId'
+    | '/staff/patients/$id'
     | '/staff/patients/'
   fileRoutesById: FileRoutesById
 }
@@ -163,6 +188,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StaffDashboardRouteImport
       parentRoute: typeof StaffRoute
     }
+    '/staff/odontogram/$patientId': {
+      id: '/staff/odontogram/$patientId'
+      path: '/odontogram/$patientId'
+      fullPath: '/staff/odontogram/$patientId'
+      preLoaderRoute: typeof StaffOdontogramPatientIdRouteImport
+      parentRoute: typeof StaffRoute
+    }
     '/staff/patients/': {
       id: '/staff/patients/'
       path: '/patients'
@@ -170,16 +202,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StaffPatientsIndexRouteImport
       parentRoute: typeof StaffRoute
     }
+    '/staff/patients/$id': {
+      id: '/staff/patients/$id'
+      path: '/patients/$id'
+      fullPath: '/staff/patients/$id'
+      preLoaderRoute: typeof StaffPatientsIdRouteImport
+      parentRoute: typeof StaffRoute
+    }
   }
 }
 
 interface StaffRouteChildren {
   StaffDashboardRoute: typeof StaffDashboardRoute
+  StaffOdontogramPatientIdRoute: typeof StaffOdontogramPatientIdRoute
+  StaffPatientsIdRoute: typeof StaffPatientsIdRoute
   StaffPatientsIndexRoute: typeof StaffPatientsIndexRoute
 }
 
 const StaffRouteChildren: StaffRouteChildren = {
   StaffDashboardRoute: StaffDashboardRoute,
+  StaffOdontogramPatientIdRoute: StaffOdontogramPatientIdRoute,
+  StaffPatientsIdRoute: StaffPatientsIdRoute,
   StaffPatientsIndexRoute: StaffPatientsIndexRoute,
 }
 
