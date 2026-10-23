@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Callout, DataTable, Field, PageHeader, Panel, Restricted, StatusBadge, Td } from "@/components/app/kit";
 import { ScheduleDialog } from "@/components/app/ScheduleDialog";
-import { OdontogramWorkspace } from "./staff.odontogram.$patientId";
+import { OdontogramWorkspace } from "@/components/app/OdontogramWorkspace";
 import { useStore } from "@/lib/store";
 import { can, canEditClinical, canSchedule } from "@/lib/permissions";
 
