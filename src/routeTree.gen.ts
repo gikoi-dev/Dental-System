@@ -15,6 +15,8 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as RecoverAccountRouteImport } from './routes/recover-account'
 import { Route as StaffRouteImport } from './routes/staff'
 import { Route as StaffDashboardRouteImport } from './routes/staff.dashboard'
+import { Route as StaffQueueRouteImport } from './routes/staff.queue'
+import { Route as StaffRegistrationRouteImport } from './routes/staff.registration'
 import { Route as StaffOdontogramPatientIdRouteImport } from './routes/staff.odontogram.$patientId'
 import { Route as StaffPatientsIndexRouteImport } from './routes/staff.patients.index'
 import { Route as StaffPatientsIdRouteImport } from './routes/staff.patients.$id'
@@ -49,6 +51,16 @@ const StaffDashboardRoute = StaffDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => StaffRoute,
 } as any)
+const StaffQueueRoute = StaffQueueRouteImport.update({
+  id: '/queue',
+  path: '/queue',
+  getParentRoute: () => StaffRoute,
+} as any)
+const StaffRegistrationRoute = StaffRegistrationRouteImport.update({
+  id: '/registration',
+  path: '/registration',
+  getParentRoute: () => StaffRoute,
+} as any)
 const StaffOdontogramPatientIdRoute =
   StaffOdontogramPatientIdRouteImport.update({
     id: '/odontogram/$patientId',
@@ -73,6 +85,8 @@ export interface FileRoutesByFullPath {
   '/recover-account': typeof RecoverAccountRoute
   '/staff': typeof StaffRouteWithChildren
   '/staff/dashboard': typeof StaffDashboardRoute
+  '/staff/queue': typeof StaffQueueRoute
+  '/staff/registration': typeof StaffRegistrationRoute
   '/staff/odontogram/$patientId': typeof StaffOdontogramPatientIdRoute
   '/staff/patients/$id': typeof StaffPatientsIdRoute
   '/staff/patients/': typeof StaffPatientsIndexRoute
@@ -84,6 +98,8 @@ export interface FileRoutesByTo {
   '/recover-account': typeof RecoverAccountRoute
   '/staff': typeof StaffRouteWithChildren
   '/staff/dashboard': typeof StaffDashboardRoute
+  '/staff/queue': typeof StaffQueueRoute
+  '/staff/registration': typeof StaffRegistrationRoute
   '/staff/odontogram/$patientId': typeof StaffOdontogramPatientIdRoute
   '/staff/patients/$id': typeof StaffPatientsIdRoute
   '/staff/patients': typeof StaffPatientsIndexRoute
@@ -96,6 +112,8 @@ export interface FileRoutesById {
   '/recover-account': typeof RecoverAccountRoute
   '/staff': typeof StaffRouteWithChildren
   '/staff/dashboard': typeof StaffDashboardRoute
+  '/staff/queue': typeof StaffQueueRoute
+  '/staff/registration': typeof StaffRegistrationRoute
   '/staff/odontogram/$patientId': typeof StaffOdontogramPatientIdRoute
   '/staff/patients/$id': typeof StaffPatientsIdRoute
   '/staff/patients/': typeof StaffPatientsIndexRoute
@@ -109,6 +127,8 @@ export interface FileRouteTypes {
     | '/recover-account'
     | '/staff'
     | '/staff/dashboard'
+    | '/staff/queue'
+    | '/staff/registration'
     | '/staff/odontogram/$patientId'
     | '/staff/patients/$id'
     | '/staff/patients/'
@@ -120,6 +140,8 @@ export interface FileRouteTypes {
     | '/recover-account'
     | '/staff'
     | '/staff/dashboard'
+    | '/staff/queue'
+    | '/staff/registration'
     | '/staff/odontogram/$patientId'
     | '/staff/patients/$id'
     | '/staff/patients'
@@ -131,6 +153,8 @@ export interface FileRouteTypes {
     | '/recover-account'
     | '/staff'
     | '/staff/dashboard'
+    | '/staff/queue'
+    | '/staff/registration'
     | '/staff/odontogram/$patientId'
     | '/staff/patients/$id'
     | '/staff/patients/'
@@ -188,6 +212,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StaffDashboardRouteImport
       parentRoute: typeof StaffRoute
     }
+    '/staff/queue': {
+      id: '/staff/queue'
+      path: '/queue'
+      fullPath: '/staff/queue'
+      preLoaderRoute: typeof StaffQueueRouteImport
+      parentRoute: typeof StaffRoute
+    }
+    '/staff/registration': {
+      id: '/staff/registration'
+      path: '/registration'
+      fullPath: '/staff/registration'
+      preLoaderRoute: typeof StaffRegistrationRouteImport
+      parentRoute: typeof StaffRoute
+    }
     '/staff/odontogram/$patientId': {
       id: '/staff/odontogram/$patientId'
       path: '/odontogram/$patientId'
@@ -214,6 +252,8 @@ declare module '@tanstack/react-router' {
 
 interface StaffRouteChildren {
   StaffDashboardRoute: typeof StaffDashboardRoute
+  StaffQueueRoute: typeof StaffQueueRoute
+  StaffRegistrationRoute: typeof StaffRegistrationRoute
   StaffOdontogramPatientIdRoute: typeof StaffOdontogramPatientIdRoute
   StaffPatientsIdRoute: typeof StaffPatientsIdRoute
   StaffPatientsIndexRoute: typeof StaffPatientsIndexRoute
@@ -221,6 +261,8 @@ interface StaffRouteChildren {
 
 const StaffRouteChildren: StaffRouteChildren = {
   StaffDashboardRoute: StaffDashboardRoute,
+  StaffQueueRoute: StaffQueueRoute,
+  StaffRegistrationRoute: StaffRegistrationRoute,
   StaffOdontogramPatientIdRoute: StaffOdontogramPatientIdRoute,
   StaffPatientsIdRoute: StaffPatientsIdRoute,
   StaffPatientsIndexRoute: StaffPatientsIndexRoute,
