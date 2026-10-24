@@ -14,9 +14,13 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as RecoverAccountRouteImport } from './routes/recover-account'
 import { Route as StaffRouteImport } from './routes/staff'
+import { Route as StaffAiAssistantRouteImport } from './routes/staff.ai-assistant'
+import { Route as StaffChangeImpactRouteImport } from './routes/staff.change-impact'
 import { Route as StaffDashboardRouteImport } from './routes/staff.dashboard'
 import { Route as StaffQueueRouteImport } from './routes/staff.queue'
 import { Route as StaffRegistrationRouteImport } from './routes/staff.registration'
+import { Route as StaffSchedulesRouteImport } from './routes/staff.schedules'
+import { Route as StaffInventoryIndexRouteImport } from './routes/staff.inventory.index'
 import { Route as StaffOdontogramPatientIdRouteImport } from './routes/staff.odontogram.$patientId'
 import { Route as StaffPatientsIndexRouteImport } from './routes/staff.patients.index'
 import { Route as StaffPatientsIdRouteImport } from './routes/staff.patients.$id'
@@ -46,6 +50,16 @@ const StaffRoute = StaffRouteImport.update({
   path: '/staff',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StaffAiAssistantRoute = StaffAiAssistantRouteImport.update({
+  id: '/ai-assistant',
+  path: '/ai-assistant',
+  getParentRoute: () => StaffRoute,
+} as any)
+const StaffChangeImpactRoute = StaffChangeImpactRouteImport.update({
+  id: '/change-impact',
+  path: '/change-impact',
+  getParentRoute: () => StaffRoute,
+} as any)
 const StaffDashboardRoute = StaffDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -59,6 +73,16 @@ const StaffQueueRoute = StaffQueueRouteImport.update({
 const StaffRegistrationRoute = StaffRegistrationRouteImport.update({
   id: '/registration',
   path: '/registration',
+  getParentRoute: () => StaffRoute,
+} as any)
+const StaffSchedulesRoute = StaffSchedulesRouteImport.update({
+  id: '/schedules',
+  path: '/schedules',
+  getParentRoute: () => StaffRoute,
+} as any)
+const StaffInventoryIndexRoute = StaffInventoryIndexRouteImport.update({
+  id: '/inventory/',
+  path: '/inventory/',
   getParentRoute: () => StaffRoute,
 } as any)
 const StaffOdontogramPatientIdRoute =
@@ -84,11 +108,15 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/recover-account': typeof RecoverAccountRoute
   '/staff': typeof StaffRouteWithChildren
+  '/staff/ai-assistant': typeof StaffAiAssistantRoute
+  '/staff/change-impact': typeof StaffChangeImpactRoute
   '/staff/dashboard': typeof StaffDashboardRoute
   '/staff/queue': typeof StaffQueueRoute
   '/staff/registration': typeof StaffRegistrationRoute
+  '/staff/schedules': typeof StaffSchedulesRoute
   '/staff/odontogram/$patientId': typeof StaffOdontogramPatientIdRoute
   '/staff/patients/$id': typeof StaffPatientsIdRoute
+  '/staff/inventory/': typeof StaffInventoryIndexRoute
   '/staff/patients/': typeof StaffPatientsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -97,11 +125,15 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/recover-account': typeof RecoverAccountRoute
   '/staff': typeof StaffRouteWithChildren
+  '/staff/ai-assistant': typeof StaffAiAssistantRoute
+  '/staff/change-impact': typeof StaffChangeImpactRoute
   '/staff/dashboard': typeof StaffDashboardRoute
   '/staff/queue': typeof StaffQueueRoute
   '/staff/registration': typeof StaffRegistrationRoute
+  '/staff/schedules': typeof StaffSchedulesRoute
   '/staff/odontogram/$patientId': typeof StaffOdontogramPatientIdRoute
   '/staff/patients/$id': typeof StaffPatientsIdRoute
+  '/staff/inventory': typeof StaffInventoryIndexRoute
   '/staff/patients': typeof StaffPatientsIndexRoute
 }
 export interface FileRoutesById {
@@ -111,11 +143,15 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/recover-account': typeof RecoverAccountRoute
   '/staff': typeof StaffRouteWithChildren
+  '/staff/ai-assistant': typeof StaffAiAssistantRoute
+  '/staff/change-impact': typeof StaffChangeImpactRoute
   '/staff/dashboard': typeof StaffDashboardRoute
   '/staff/queue': typeof StaffQueueRoute
   '/staff/registration': typeof StaffRegistrationRoute
+  '/staff/schedules': typeof StaffSchedulesRoute
   '/staff/odontogram/$patientId': typeof StaffOdontogramPatientIdRoute
   '/staff/patients/$id': typeof StaffPatientsIdRoute
+  '/staff/inventory/': typeof StaffInventoryIndexRoute
   '/staff/patients/': typeof StaffPatientsIndexRoute
 }
 export interface FileRouteTypes {
@@ -126,11 +162,15 @@ export interface FileRouteTypes {
     | '/login'
     | '/recover-account'
     | '/staff'
+    | '/staff/ai-assistant'
+    | '/staff/change-impact'
     | '/staff/dashboard'
     | '/staff/queue'
     | '/staff/registration'
+    | '/staff/schedules'
     | '/staff/odontogram/$patientId'
     | '/staff/patients/$id'
+    | '/staff/inventory/'
     | '/staff/patients/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -139,11 +179,15 @@ export interface FileRouteTypes {
     | '/login'
     | '/recover-account'
     | '/staff'
+    | '/staff/ai-assistant'
+    | '/staff/change-impact'
     | '/staff/dashboard'
     | '/staff/queue'
     | '/staff/registration'
+    | '/staff/schedules'
     | '/staff/odontogram/$patientId'
     | '/staff/patients/$id'
+    | '/staff/inventory'
     | '/staff/patients'
   id:
     | '__root__'
@@ -152,11 +196,15 @@ export interface FileRouteTypes {
     | '/login'
     | '/recover-account'
     | '/staff'
+    | '/staff/ai-assistant'
+    | '/staff/change-impact'
     | '/staff/dashboard'
     | '/staff/queue'
     | '/staff/registration'
+    | '/staff/schedules'
     | '/staff/odontogram/$patientId'
     | '/staff/patients/$id'
+    | '/staff/inventory/'
     | '/staff/patients/'
   fileRoutesById: FileRoutesById
 }
@@ -205,6 +253,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StaffRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/staff/ai-assistant': {
+      id: '/staff/ai-assistant'
+      path: '/ai-assistant'
+      fullPath: '/staff/ai-assistant'
+      preLoaderRoute: typeof StaffAiAssistantRouteImport
+      parentRoute: typeof StaffRoute
+    }
+    '/staff/change-impact': {
+      id: '/staff/change-impact'
+      path: '/change-impact'
+      fullPath: '/staff/change-impact'
+      preLoaderRoute: typeof StaffChangeImpactRouteImport
+      parentRoute: typeof StaffRoute
+    }
     '/staff/dashboard': {
       id: '/staff/dashboard'
       path: '/dashboard'
@@ -224,6 +286,20 @@ declare module '@tanstack/react-router' {
       path: '/registration'
       fullPath: '/staff/registration'
       preLoaderRoute: typeof StaffRegistrationRouteImport
+      parentRoute: typeof StaffRoute
+    }
+    '/staff/schedules': {
+      id: '/staff/schedules'
+      path: '/schedules'
+      fullPath: '/staff/schedules'
+      preLoaderRoute: typeof StaffSchedulesRouteImport
+      parentRoute: typeof StaffRoute
+    }
+    '/staff/inventory/': {
+      id: '/staff/inventory/'
+      path: '/inventory'
+      fullPath: '/staff/inventory/'
+      preLoaderRoute: typeof StaffInventoryIndexRouteImport
       parentRoute: typeof StaffRoute
     }
     '/staff/odontogram/$patientId': {
@@ -251,20 +327,28 @@ declare module '@tanstack/react-router' {
 }
 
 interface StaffRouteChildren {
+  StaffAiAssistantRoute: typeof StaffAiAssistantRoute
+  StaffChangeImpactRoute: typeof StaffChangeImpactRoute
   StaffDashboardRoute: typeof StaffDashboardRoute
   StaffQueueRoute: typeof StaffQueueRoute
   StaffRegistrationRoute: typeof StaffRegistrationRoute
+  StaffSchedulesRoute: typeof StaffSchedulesRoute
   StaffOdontogramPatientIdRoute: typeof StaffOdontogramPatientIdRoute
   StaffPatientsIdRoute: typeof StaffPatientsIdRoute
+  StaffInventoryIndexRoute: typeof StaffInventoryIndexRoute
   StaffPatientsIndexRoute: typeof StaffPatientsIndexRoute
 }
 
 const StaffRouteChildren: StaffRouteChildren = {
+  StaffAiAssistantRoute: StaffAiAssistantRoute,
+  StaffChangeImpactRoute: StaffChangeImpactRoute,
   StaffDashboardRoute: StaffDashboardRoute,
   StaffQueueRoute: StaffQueueRoute,
   StaffRegistrationRoute: StaffRegistrationRoute,
+  StaffSchedulesRoute: StaffSchedulesRoute,
   StaffOdontogramPatientIdRoute: StaffOdontogramPatientIdRoute,
   StaffPatientsIdRoute: StaffPatientsIdRoute,
+  StaffInventoryIndexRoute: StaffInventoryIndexRoute,
   StaffPatientsIndexRoute: StaffPatientsIndexRoute,
 }
 
