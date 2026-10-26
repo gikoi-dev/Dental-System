@@ -19,6 +19,7 @@ import { Route as AdminResourcesRouteImport } from './routes/admin.resources'
 import { Route as AdminRolesRouteImport } from './routes/admin.roles'
 import { Route as AdminTreatmentPlansRouteImport } from './routes/admin.treatment-plans'
 import { Route as AdminUsersRouteImport } from './routes/admin.users'
+import { Route as PatientDashboardRouteImport } from './routes/patient.dashboard'
 import { Route as StaffAiAssistantRouteImport } from './routes/staff.ai-assistant'
 import { Route as StaffAuditLogsRouteImport } from './routes/staff.audit-logs'
 import { Route as StaffChangeImpactRouteImport } from './routes/staff.change-impact'
@@ -83,6 +84,11 @@ const AdminUsersRoute = AdminUsersRouteImport.update({
   id: '/users',
   path: '/users',
   getParentRoute: () => AdminRoute,
+} as any)
+const PatientDashboardRoute = PatientDashboardRouteImport.update({
+  id: '/patient/dashboard',
+  path: '/patient/dashboard',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const StaffAiAssistantRoute = StaffAiAssistantRouteImport.update({
   id: '/ai-assistant',
@@ -167,6 +173,7 @@ export interface FileRoutesByFullPath {
   '/admin/roles': typeof AdminRolesRoute
   '/admin/treatment-plans': typeof AdminTreatmentPlansRoute
   '/admin/users': typeof AdminUsersRoute
+  '/patient/dashboard': typeof PatientDashboardRoute
   '/staff/ai-assistant': typeof StaffAiAssistantRoute
   '/staff/audit-logs': typeof StaffAuditLogsRoute
   '/staff/change-impact': typeof StaffChangeImpactRoute
@@ -193,6 +200,7 @@ export interface FileRoutesByTo {
   '/admin/roles': typeof AdminRolesRoute
   '/admin/treatment-plans': typeof AdminTreatmentPlansRoute
   '/admin/users': typeof AdminUsersRoute
+  '/patient/dashboard': typeof PatientDashboardRoute
   '/staff/ai-assistant': typeof StaffAiAssistantRoute
   '/staff/audit-logs': typeof StaffAuditLogsRoute
   '/staff/change-impact': typeof StaffChangeImpactRoute
@@ -220,6 +228,7 @@ export interface FileRoutesById {
   '/admin/roles': typeof AdminRolesRoute
   '/admin/treatment-plans': typeof AdminTreatmentPlansRoute
   '/admin/users': typeof AdminUsersRoute
+  '/patient/dashboard': typeof PatientDashboardRoute
   '/staff/ai-assistant': typeof StaffAiAssistantRoute
   '/staff/audit-logs': typeof StaffAuditLogsRoute
   '/staff/change-impact': typeof StaffChangeImpactRoute
@@ -248,6 +257,7 @@ export interface FileRouteTypes {
     | '/admin/roles'
     | '/admin/treatment-plans'
     | '/admin/users'
+    | '/patient/dashboard'
     | '/staff/ai-assistant'
     | '/staff/audit-logs'
     | '/staff/change-impact'
@@ -274,6 +284,7 @@ export interface FileRouteTypes {
     | '/admin/roles'
     | '/admin/treatment-plans'
     | '/admin/users'
+    | '/patient/dashboard'
     | '/staff/ai-assistant'
     | '/staff/audit-logs'
     | '/staff/change-impact'
@@ -300,6 +311,7 @@ export interface FileRouteTypes {
     | '/admin/roles'
     | '/admin/treatment-plans'
     | '/admin/users'
+    | '/patient/dashboard'
     | '/staff/ai-assistant'
     | '/staff/audit-logs'
     | '/staff/change-impact'
@@ -322,6 +334,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   RecoverAccountRoute: typeof RecoverAccountRoute
   StaffRoute: typeof StaffRouteWithChildren
+  PatientDashboardRoute: typeof PatientDashboardRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -395,6 +408,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/users'
       preLoaderRoute: typeof AdminUsersRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/patient/dashboard': {
+      id: '/patient/dashboard'
+      path: '/patient/dashboard'
+      fullPath: '/patient/dashboard'
+      preLoaderRoute: typeof PatientDashboardRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/staff/ai-assistant': {
       id: '/staff/ai-assistant'
@@ -557,6 +577,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   RecoverAccountRoute: RecoverAccountRoute,
   StaffRoute: StaffRouteWithChildren,
+  PatientDashboardRoute: PatientDashboardRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
