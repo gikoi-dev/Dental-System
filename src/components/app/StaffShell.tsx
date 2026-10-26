@@ -115,13 +115,13 @@ export function StaffShell() {
 
   useEffect(() => {
     if (!hydrated) return;
-    if (!role) nav({ to: "/login" });
+    if (!role) nav({ to: "/login", search: { mode: "staff" } });
     else if (role === "patient") nav({ to: "/patient/dashboard" });
   }, [hydrated, role, nav]);
 
   if (!hydrated || !role || role === "patient") return <div className="flex min-h-screen items-center justify-center text-sm text-muted-foreground">Loading workspace…</div>;
 
-  const logout = () => { setRole(null); toast.success("Signed out"); nav({ to: "/login" }); };
+  const logout = () => { setRole(null); toast.success("Signed out"); nav({ to: "/login", search: { mode: "staff" } }); };
   const switchRole = (r: Role) => { setRole(r); toast.success(`Viewing as ${ROLE_LABELS[r]}`); nav({ to: r === "patient" ? "/patient/dashboard" : "/staff/dashboard" }); };
 
   return (
