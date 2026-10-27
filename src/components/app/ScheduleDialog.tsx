@@ -55,7 +55,7 @@ export function ScheduleDialog({
   initial?: Schedule;
   patientId?: string;
 }) {
-  const { patients, setSchedules, log } = useStore();
+  const { patients, schedules, setSchedules, log } = useStore();
   const [d, setD] = useState<Partial<Schedule>>(initial ?? blank(patientId));
   const [touched, setTouched] = useState(false);
   const [running, setRunning] = useState(false);
@@ -72,6 +72,8 @@ export function ScheduleDialog({
   if (!d.procedure) errors.procedure = "Please select the procedure or treatment.";
   if (!d.tooth) errors.tooth = "Enter the affected tooth or site (e.g. 26 or Full mouth).";
   if (!d.date) errors.date = "Please choose a date.";
+  if (!d.start) errors.start = "Please choose a start time.";
+  if (!d.duration || d.duration < 10) errors.duration = "Duration must be at least 10 minutes.";
   const valid = Object.keys(errors).length === 0;
   const mats = PROCEDURE_MATERIALS[d.procedure ?? ""] ?? [];
 
@@ -83,7 +85,28 @@ export function ScheduleDialog({
     setRunning(false);
   }
   function save(status: ScheduleStatus) {
-    const p = patients.find((x) => x.id === d.patientId)!;
+    setTouched(true);
+    if (!valid) {
+      toast.error("Complete the required schedule fields before saving.");
+      return;
+    }
+    const p = patients.find((x) => x.id === d.patientId);
+    if (!p) {
+      toast.error("Select a valid patient record before saving.");
+      return;
+    }
+    const duplicate = schedules.some(
+      (s) =>
+        s.id !== initial?.id &&
+        s.patientId === d.patientId &&
+        s.date === d.date &&
+        s.start === d.start &&
+        !["Completed", "Cancelled"].includes(s.status),
+    );
+    if (duplicate) {
+      toast.error("This patient already has an active schedule at that date and time.");
+      return;
+    }
     const rec: Schedule = {
       ...(d as Schedule),
       patient: p.name,
