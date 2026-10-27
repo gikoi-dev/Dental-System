@@ -234,9 +234,40 @@ export function StaffShell() {
 
   useEffect(() => {
     if (!hydrated) return;
-    if (!role) nav({ to: "/login", search: { mode: "staff" } });
-    else if (role === "patient") nav({ to: "/patient/dashboard" });
-  }, [hydrated, role, nav]);
+    if (!role) {
+      nav({ to: "/login", search: { mode: "staff" } });
+      return;
+    }
+    if (role === "patient") {
+      nav({ to: "/patient/dashboard" });
+      return;
+    }
+
+    const protectedRoute = [
+      { prefix: "/admin/users", key: "users" as NavKey },
+      { prefix: "/admin/roles", key: "roles" as NavKey },
+      { prefix: "/admin/resources", key: "resources" as NavKey },
+      { prefix: "/admin/treatment-plans", key: "plans" as NavKey },
+      { prefix: "/admin/backup", key: "backup" as NavKey },
+      { prefix: "/staff/registration", key: "registration" as NavKey },
+      { prefix: "/staff/odontogram", key: "odontogram" as NavKey },
+      { prefix: "/staff/queue", key: "queue" as NavKey },
+      { prefix: "/staff/schedules", key: "schedules" as NavKey },
+      { prefix: "/staff/ai-assistant", key: "ai" as NavKey },
+      { prefix: "/staff/change-impact", key: "impact" as NavKey },
+      { prefix: "/staff/inventory/batches", key: "batches" as NavKey },
+      { prefix: "/staff/inventory/forecasts", key: "forecast" as NavKey },
+      { prefix: "/staff/inventory", key: "inventory" as NavKey },
+      { prefix: "/staff/reports", key: "reports" as NavKey },
+      { prefix: "/staff/audit-logs", key: "audit" as NavKey },
+      { prefix: "/staff/patients", key: "patients" as NavKey },
+    ].find((route) => pathname.startsWith(route.prefix));
+
+    if (protectedRoute && !can(role, protectedRoute.key)) {
+      toast.error("You do not have access to that workspace.");
+      nav({ to: "/staff/dashboard" });
+    }
+  }, [hydrated, role, nav, pathname]);
 
   if (!hydrated || !role || role === "patient")
     return (
