@@ -23,6 +23,7 @@ import {
   type ScheduleStatus,
 } from "@/lib/mock-data";
 import { itemName, runChangeImpactAnalysis, type ImpactResult } from "@/lib/mock-service";
+import { hasDuplicateActiveSchedule, validateScheduleDraft } from "@/lib/workflow-rules";
 import { useStore } from "@/lib/store";
 import { Field, selectCls } from "./kit";
 import { ImpactReview, impactBlocks } from "./ImpactReview";
@@ -67,13 +68,7 @@ export function ScheduleDialog({
     setAck(false);
   };
 
-  const errors: Record<string, string> = {};
-  if (!d.patientId) errors.patientId = "Please select the patient for this follow-up.";
-  if (!d.procedure) errors.procedure = "Please select the procedure or treatment.";
-  if (!d.tooth) errors.tooth = "Enter the affected tooth or site (e.g. 26 or Full mouth).";
-  if (!d.date) errors.date = "Please choose a date.";
-  if (!d.start) errors.start = "Please choose a start time.";
-  if (!d.duration || d.duration < 10) errors.duration = "Duration must be at least 10 minutes.";
+  const errors = validateScheduleDraft(d);
   const valid = Object.keys(errors).length === 0;
   const mats = PROCEDURE_MATERIALS[d.procedure ?? ""] ?? [];
 
@@ -95,14 +90,7 @@ export function ScheduleDialog({
       toast.error("Select a valid patient record before saving.");
       return;
     }
-    const duplicate = schedules.some(
-      (s) =>
-        s.id !== initial?.id &&
-        s.patientId === d.patientId &&
-        s.date === d.date &&
-        s.start === d.start &&
-        !["Completed", "Cancelled"].includes(s.status),
-    );
+    const duplicate = hasDuplicateActiveSchedule(schedules, d, initial?.id);
     if (duplicate) {
       toast.error("This patient already has an active schedule at that date and time.");
       return;

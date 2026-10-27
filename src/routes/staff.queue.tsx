@@ -33,6 +33,7 @@ import {
 import { DENTISTS, type QueueEntry, type QueueStatus } from "@/lib/mock-data";
 import { useStore } from "@/lib/store";
 import { can } from "@/lib/permissions";
+import { canTransitionQueue } from "@/lib/workflow-rules";
 
 export const Route = createFileRoute("/staff/queue")({
   head: () => ({
@@ -74,6 +75,11 @@ function Queue() {
   const editable = role === "receptionist" || role === "admin";
 
   const move = (id: string, status: QueueStatus, r?: string) => {
+    const current = queue.find((q) => q.id === id);
+    if (!current || !canTransitionQueue(current.status, status)) {
+      toast.error("That queue transition is not allowed.");
+      return;
+    }
     setQueue((all) => all.map((q) => (q.id === id ? { ...q, status, reason: r ?? q.reason } : q)));
     log("Queue adjustment", "Queue", id, `Status → ${status}${r ? `. Reason: ${r}` : ""}`);
     toast.success(`Queue updated: ${status}`);
