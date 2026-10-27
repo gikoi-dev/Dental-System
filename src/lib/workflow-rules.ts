@@ -9,7 +9,8 @@ export function validateScheduleDraft(draft: ScheduleDraft) {
   if (!draft.tooth) errors.tooth = "Enter the affected tooth or site (e.g. 26 or Full mouth).";
   if (!draft.date) errors.date = "Please choose a date.";
   if (!draft.start) errors.start = "Please choose a start time.";
-  if (!draft.duration || draft.duration < 10) errors.duration = "Duration must be at least 10 minutes.";
+  if (!draft.duration || draft.duration < 10)
+    errors.duration = "Duration must be at least 10 minutes.";
   return errors;
 }
 
