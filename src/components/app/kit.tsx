@@ -257,7 +257,7 @@ export function DataTable({
 }) {
   return (
     <div className={cn("overflow-x-auto rounded-xl border", className)}>
-      <table className="w-full text-sm">
+      <table className="min-w-[720px] w-full text-sm">
         <thead className="bg-muted/60 text-left text-xs uppercase tracking-wide text-muted-foreground">
           <tr>
             {head.map((h) => (

@@ -116,7 +116,7 @@ function Queue() {
           )
         }
       />
-      <div className="mb-4 flex flex-wrap items-center gap-3">
+      <div className="mb-4 flex flex-col gap-3 lg:flex-row lg:items-center">
         <Callout
           tone={overlapUsed ? "warning" : "success"}
           className="flex-1"
@@ -130,7 +130,7 @@ function Queue() {
             ? "Q6 (Daniel R. Flores) was overlapped by walk-in Q4 at 09:20. A second overlap requires an authorized override."
             : "One eligible earlier walk-in may be placed ahead of one scheduled patient."}
         </Callout>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2 lg:ml-auto">
           <Button
             variant="ghost"
             size="sm"
@@ -152,8 +152,10 @@ function Queue() {
             {(["board", "table"] as const).map((v) => (
               <button
                 key={v}
+                type="button"
                 onClick={() => setView(v)}
-                className={`rounded-md px-3 py-1 text-sm font-medium capitalize ${view === v ? "bg-primary text-primary-foreground" : ""}`}
+                aria-pressed={view === v}
+                className={`rounded-md px-3 py-1 text-sm font-medium capitalize transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${view === v ? "bg-primary text-primary-foreground" : "hover:bg-muted"}`}
               >
                 {v}
               </button>
@@ -168,7 +170,7 @@ function Queue() {
       )}
 
       {view === "board" ? (
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-6">
+        <div className="grid gap-4 overflow-x-auto pb-2 sm:grid-cols-2 xl:grid-cols-6">
           {COLS.map((c) => {
             const items = queue.filter((q) => q.status === c);
             return (
