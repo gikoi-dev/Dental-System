@@ -35,6 +35,7 @@ import { ScheduleDialog } from "@/components/app/ScheduleDialog";
 import { OdontogramWorkspace } from "@/components/app/OdontogramWorkspace";
 import { useStore } from "@/lib/store";
 import { can, canEditClinical, canSchedule } from "@/lib/permissions";
+import { updatePatientContact, validatePatientContact } from "@/lib/patient-workflow";
 
 export const Route = createFileRoute("/staff/patients/$id")({
   head: () => ({
@@ -69,6 +70,7 @@ function PatientPage() {
     );
   const mine = schedules.filter((s) => s.patientId === id);
   const clinical = canEditClinical(role);
+  const contactErrors = validatePatientContact({ contact, address });
 
   return (
     <>
@@ -253,14 +255,10 @@ function PatientPage() {
             <DialogDescription>Changes are recorded in the audit log.</DialogDescription>
           </DialogHeader>
           <div className="space-y-3">
-            <Field
-              label="Contact number"
-              required
-              error={contact.length < 7 ? "Please enter a complete contact number." : undefined}
-            >
+            <Field label="Contact number" required error={contactErrors.contact}>
               <Input value={contact} onChange={(e) => setContact(e.target.value)} />
             </Field>
-            <Field label="Address" required>
+            <Field label="Address" required error={contactErrors.address}>
               <Input value={address} onChange={(e) => setAddress(e.target.value)} />
             </Field>
           </div>
@@ -269,10 +267,10 @@ function PatientPage() {
               Cancel
             </Button>
             <Button
-              disabled={contact.length < 7 || !address}
+              disabled={Boolean(contactErrors.contact || contactErrors.address)}
               onClick={() => {
-                setPatients((all) =>
-                  all.map((x) => (x.id === p.id ? { ...x, contact, address } : x)),
+                setPatients(
+                  (all) => updatePatientContact(all, p.id, { contact, address }).patients,
                 );
                 log("Patient-record update", "Patients", p.id, "Contact details updated.");
                 toast.success("Patient record saved successfully.");
