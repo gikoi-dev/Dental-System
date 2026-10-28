@@ -257,22 +257,6 @@ function Landing() {
               <div className="relative flex min-h-[330px] w-full max-w-[580px] items-center justify-center sm:min-h-[390px] lg:min-h-[520px]">
                 <DentriqTooth3D />
               </div>
-              {[
-                ["top-5 left-0", "Expert care", ShieldCheck],
-                ["right-0 top-20", "Patient comfort", HeartHandshake],
-                ["bottom-5 left-5", "Clear communication", MessageCircle],
-                ["bottom-0 right-2", "Organized care", ClipboardCheck],
-              ].map(([position, label, Icon]) => (
-                <div
-                  key={String(label)}
-                  className={`absolute ${position} flex items-center gap-2 rounded-full border border-white/15 bg-white/[.09] px-3 py-2 text-[11px] text-white/80 shadow-lg backdrop-blur-xl`}
-                >
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#7cf5d5]/20 text-[#a5f7df]">
-                    <Icon className="h-3.5 w-3.5" />
-                  </span>
-                  {label}
-                </div>
-              ))}
             </div>
           </div>
         </div>
