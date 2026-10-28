@@ -279,7 +279,7 @@ export function StaffShell() {
   const logout = () => {
     setRole(null);
     toast.success("Signed out");
-    nav({ to: "/login", search: { mode: "staff" } });
+    nav({ to: "/login", search: { mode: "staff", signedOut: true } });
   };
   const switchRole = (r: Role) => {
     setRole(r);

@@ -50,14 +50,17 @@ describe("App routing", () => {
     expect(router.matchRoutes(path).at(-1)?.routeId).not.toBe(rootRouteId);
   });
 
-  it("keeps patient logout pointed at the patient login route with feedback state", () => {
+  it.each([
+    ["patient", "patient"],
+    ["staff", "staff"],
+  ])("keeps %s logout pointed at the login route with feedback state", (mode, expectedMode) => {
     const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
     const location = router.buildLocation({
       to: "/login",
-      search: { mode: "patient", signedOut: true },
+      search: { mode, signedOut: true },
     });
 
     expect(location.pathname).toBe("/login");
-    expect(location.search).toEqual({ mode: "patient", signedOut: true });
+    expect(location.search).toEqual({ mode: expectedMode, signedOut: true });
   });
 });
