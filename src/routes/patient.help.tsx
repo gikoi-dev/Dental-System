@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { HelpCircle } from "lucide-react";
-import { HelpCenter } from "@/components/app/AccountTools";
+import { HelpCenter } from "@/features/account/AccountTools";
 import { PatientPortalShell } from "@/components/app/PatientPortalShell";
 
 export const Route = createFileRoute("/patient/help")({

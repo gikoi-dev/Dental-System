@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Settings } from "lucide-react";
-import { AccountSettings } from "@/components/app/AccountTools";
+import { AccountSettings } from "@/features/account/AccountTools";
 import { PatientPortalShell } from "@/components/app/PatientPortalShell";
 
 export const Route = createFileRoute("/patient/settings")({

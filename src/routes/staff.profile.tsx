@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AccountProfile } from "@/components/app/AccountTools";
+import { AccountProfile } from "@/features/account/AccountTools";
 import { PageHeader } from "@/components/app/kit";
 
 export const Route = createFileRoute("/staff/profile")({
