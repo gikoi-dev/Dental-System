@@ -254,44 +254,11 @@ function Landing() {
               <div className="absolute h-64 w-64 rounded-full bg-[#65f6d2]/25 blur-3xl sm:h-80 sm:w-80" />
               <div className="absolute h-56 w-56 rounded-full border border-[#8cf4d8]/20 sm:h-72 sm:w-72" />
               <div className="relative flex h-72 w-56 items-center justify-center sm:h-[390px] sm:w-[310px]">
-                <svg
-                  viewBox="0 0 626 587"
-                  role="img"
-                  aria-label="Glossy white molar tooth"
-                  className="relative z-10 h-full w-full overflow-visible drop-shadow-[0_0_34px_rgba(126,255,222,.7)]"
-                >
-                  <defs>
-                    <mask
-                      id="toothAssetMask"
-                      maskUnits="userSpaceOnUse"
-                      x="0"
-                      y="0"
-                      width="626"
-                      height="587"
-                    >
-                      <rect width="626" height="587" fill="black" />
-                      <path
-                        fill="white"
-                        d="M141 115C137 77 165 55 200 59C228 62 245 79 266 85C287 91 305 67 341 63C371 59 393 76 410 88C429 68 459 69 480 86C507 108 500 151 492 185C484 220 470 246 465 279C460 316 465 360 452 404C445 428 434 454 423 477C415 494 400 502 389 493L364 464L345 528C340 547 325 555 313 542L291 493L267 541C256 554 242 546 237 528L217 466L194 494C182 503 167 494 159 477C148 454 137 428 130 404C117 360 122 316 117 279C112 246 98 220 90 185C82 151 77 108 104 86C125 69 155 68 174 88C157 76 145 94 141 115Z"
-                      />
-                      <path
-                        fill="black"
-                        d="M205 420C219 401 234 403 245 427L252 470L237 528C232 545 220 541 215 526L195 468Z"
-                      />
-                      <path
-                        fill="black"
-                        d="M356 423C367 400 382 402 395 421L404 469L389 493L364 464Z"
-                      />
-                    </mask>
-                  </defs>
-                  <image
-                    href="/images/hero-tooth.jpg"
-                    width="626"
-                    height="587"
-                    preserveAspectRatio="none"
-                    mask="url(#toothAssetMask)"
-                  />
-                </svg>
+                <img
+                  src="/images/hero-tooth-final.jpg"
+                  alt="Glossy white molar tooth on a blue gradient"
+                  className="relative z-10 h-full w-full object-cover drop-shadow-[0_0_34px_rgba(126,255,222,.7)]"
+                />
               </div>
               {[
                 ["top-5 left-0", "Expert care", ShieldCheck],
