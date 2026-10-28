@@ -45,6 +45,11 @@ describe("App routing", () => {
     "/patient/notifications",
     "/patient/instructions",
     "/patient/profile",
+    "/staff/profile",
+    "/staff/settings",
+    "/staff/help",
+    "/patient/settings",
+    "/patient/help",
   ])("registers the required route %s", (path) => {
     const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
 

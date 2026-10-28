@@ -110,7 +110,9 @@ export function AccountProfile({ audience }: { audience: "staff" | "patient" }) 
           </div>
           <div>
             <dt className="text-muted-foreground">Access status</dt>
-            <dd className="mt-1 font-medium text-success">Active in current session</dd>
+            <dd className="mt-1 font-medium text-warning">
+              Client-side demo session; not server-validated
+            </dd>
           </div>
           <div>
             <dt className="text-muted-foreground">Email</dt>
@@ -118,7 +120,7 @@ export function AccountProfile({ audience }: { audience: "staff" | "patient" }) 
           </div>
           <div>
             <dt className="text-muted-foreground">Protected identity</dt>
-            <dd className="mt-1 font-medium">Managed by the clinic system</dd>
+            <dd className="mt-1 font-medium">Displayed from demo session data</dd>
           </div>
         </dl>
       </Panel>
@@ -190,8 +192,8 @@ export function AccountSettings({ audience }: { audience: "staff" | "patient" })
           <SettingRow
             icon={<ShieldCheck className="h-4 w-4 text-success" />}
             title="Verification flow"
-            description="Existing sign-in verification is required for account access."
-            value="Enabled for this prototype"
+            description="The visible code step is a demo flow; no server authentication provider is connected."
+            value="Prototype-only verification"
           />
           <SettingRow
             icon={<LockKeyhole className="h-4 w-4 text-primary" />}
