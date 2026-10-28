@@ -381,17 +381,23 @@ export function StaffShell() {
                 <p className="text-xs font-normal text-muted-foreground">{user!.email}</p>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => toast("Profile — prototype screen")}>
-                <User className="mr-2 h-4 w-4" />
-                Profile
+              <DropdownMenuItem asChild>
+                <Link to="/staff/profile">
+                  <User className="mr-2 h-4 w-4" />
+                  Profile
+                </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => toast("Settings — prototype screen")}>
-                <Settings className="mr-2 h-4 w-4" />
-                Settings
+              <DropdownMenuItem asChild>
+                <Link to="/staff/settings">
+                  <Settings className="mr-2 h-4 w-4" />
+                  Settings
+                </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => toast("Help center — prototype screen")}>
-                <HelpCircle className="mr-2 h-4 w-4" />
-                Help
+              <DropdownMenuItem asChild>
+                <Link to="/staff/help">
+                  <HelpCircle className="mr-2 h-4 w-4" />
+                  Help & Support
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuSub>
                 <DropdownMenuSubTrigger>Switch demo role</DropdownMenuSubTrigger>

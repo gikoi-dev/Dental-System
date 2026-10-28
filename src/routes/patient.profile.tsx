@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { KeyRound, Mail, ShieldCheck, UserRound } from "lucide-react";
 import { useState } from "react";
+import { useStore } from "@/lib/store";
 import { Button } from "@/components/ui/button";
 import { Callout, Panel, StatusBadge } from "@/components/app/kit";
 import { PatientPortalShell } from "@/components/app/PatientPortalShell";
@@ -12,6 +13,7 @@ export const Route = createFileRoute("/patient/profile")({
 
 function Profile() {
   const [requested, setRequested] = useState(false);
+  const { user } = useStore();
   return (
     <PatientPortalShell
       title="Profile"
@@ -28,7 +30,7 @@ function Profile() {
           <dl className="space-y-3 text-sm">
             <div>
               <dt className="text-muted-foreground">Name</dt>
-              <dd className="font-medium">Maria L. Santos</dd>
+              <dd className="font-medium">{user?.name ?? "Authenticated patient"}</dd>
             </div>
             <div>
               <dt className="text-muted-foreground">Patient ID</dt>
@@ -36,7 +38,7 @@ function Profile() {
             </div>
             <div>
               <dt className="text-muted-foreground">Email</dt>
-              <dd>maria.s@example.com</dd>
+              <dd>{user?.email ?? "Email unavailable"}</dd>
             </div>
             <div>
               <dt className="text-muted-foreground">Portal status</dt>

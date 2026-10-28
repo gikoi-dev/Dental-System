@@ -3,8 +3,10 @@ import {
   BookOpen,
   FileText,
   Home,
+  HelpCircle,
   LogOut,
   MessageSquare,
+  Settings,
   ShieldCheck,
   UserRound,
 } from "lucide-react";
@@ -22,6 +24,8 @@ const NAV = [
   { to: "/patient/notifications", label: "Notifications", icon: MessageSquare },
   { to: "/patient/instructions", label: "Instructions", icon: BookOpen },
   { to: "/patient/profile", label: "Profile", icon: ShieldCheck },
+  { to: "/patient/settings", label: "Settings", icon: Settings },
+  { to: "/patient/help", label: "Help & support", icon: HelpCircle },
 ] as const;
 
 export function PatientPortalShell({
@@ -33,7 +37,7 @@ export function PatientPortalShell({
   description: string;
   children: ReactNode;
 }) {
-  const { role, setRole } = useStore();
+  const { role, setRole, user } = useStore();
   const location = useLocation();
   const nav = useNavigate();
 
@@ -78,7 +82,9 @@ export function PatientPortalShell({
       </header>
       <main className="mx-auto max-w-6xl space-y-6 p-5">
         <div>
-          <p className="text-sm font-medium text-primary">Maria L. Santos · P-1001</p>
+          <p className="text-sm font-medium text-primary">
+            {user?.name ?? "Authenticated patient"} · P-1001
+          </p>
           <h1 className="mt-1 text-2xl font-bold">{title}</h1>
           <p className="mt-1 text-muted-foreground">{description}</p>
         </div>
