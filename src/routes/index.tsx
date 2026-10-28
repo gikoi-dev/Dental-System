@@ -1,250 +1,265 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
+  ArrowDown,
   ArrowRight,
-  BarChart3,
-  Boxes,
-  Brain,
-  CalendarCheck2,
-  ClipboardCheck,
-  Lock,
-  Network,
-  ScanLine,
-  ShieldCheck,
-  Smile,
-  TrendingUp,
-  UserRoundCheck,
+  Menu,
+  Sparkles,
+  Star,
+  Stethoscope,
+  Syringe,
+  WandSparkles,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Logo } from "@/components/app/Logo";
-import { Callout } from "@/components/app/kit";
 import clinic from "@/assets/clinic.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Dentriq — AI-Assisted Dental Clinic System | Cruz Nery Dental Clinic" },
+      { title: "Dentriq — Calm, considered dental care" },
       {
         name: "description",
         content:
-          "Dentriq centralizes patient records, OCR registration, a 3D odontogram, walk-in queue, follow-ups, and FIFO inventory for Cruz Nery Dental Clinic.",
+          "A calmer dental experience with thoughtful care, advanced technology, and a team that puts your comfort first.",
       },
-      { property: "og:title", content: "Dentriq — Cruz Nery Dental Clinic" },
+      { property: "og:title", content: "Dentriq — Calm, considered dental care" },
       {
         property: "og:description",
-        content:
-          "AI-Assisted Dental Clinic Information System with 3D Odontogram and Intelligent Workflow Automation.",
+        content: "Thoughtful dental care, beautifully considered.",
       },
     ],
   }),
   component: Landing,
 });
 
-const FEATURES = [
+const SERVICES = [
   {
-    icon: ScanLine,
-    t: "OCR-Assisted Patient Registration",
-    d: "Scan paper forms; staff verify every field before saving.",
+    icon: Stethoscope,
+    title: "Preventive care",
+    body: "Complete care for a healthy, confident smile.",
   },
   {
-    icon: Smile,
-    t: "3D Interactive Digital Odontogram",
-    d: "Rotate, zoom and document tooth-level history.",
+    icon: Syringe,
+    title: "Specialized treatments",
+    body: "Expert solutions, tailored to your needs.",
   },
   {
-    icon: UserRoundCheck,
-    t: "Walk-In Queue Management",
-    d: "Walk-in-first flow with a controlled one-time overlap rule.",
+    icon: WandSparkles,
+    title: "Aesthetic dentistry",
+    body: "Subtle enhancements that feel entirely you.",
   },
-  {
-    icon: CalendarCheck2,
-    t: "Dentist-Arranged Follow-Ups",
-    d: "Only dentists and authorized staff schedule follow-ups.",
-  },
-  {
-    icon: Brain,
-    t: "AI Workflow Assistance",
-    d: "Find records and prepare drafts — never diagnose.",
-  },
-  {
-    icon: Network,
-    t: "AI Change-Impact Analysis",
-    d: "Ten checks before any schedule change is confirmed.",
-  },
-  {
-    icon: Boxes,
-    t: "FIFO Inventory Management",
-    d: "Deduct from the earliest eligible batch automatically.",
-  },
-  {
-    icon: TrendingUp,
-    t: "AI Inventory Forecasting",
-    d: "Advisory shortage and expiry risk estimates.",
-  },
-  {
-    icon: Lock,
-    t: "Information-Only Patient Portal",
-    d: "Patients view their own records and schedules.",
-  },
-  {
-    icon: ShieldCheck,
-    t: "Reports, Audit Logs & Security",
-    d: "Role-based access, MFA and full audit trail.",
-  },
+  { icon: Sparkles, title: "Advanced diagnostics", body: "A clearer picture of your oral health." },
 ];
-const STEPS = [
-  "Patient arrives and completes a paper registration form.",
-  "Receptionist scans or photographs the form.",
-  "OCR extracts available information.",
-  "Receptionist verifies, corrects, and completes required fields.",
-  "Verified patient record is saved.",
-  "Patient may be given an information-only Patient Portal account.",
+
+const GALLERY = [
+  { src: "/images/clinic-reception.png", alt: "Warm reception area at the clinic" },
+  { src: "/images/clinic-interior.png", alt: "Quiet dental treatment room" },
+  { src: "/images/smile-detail.png", alt: "Patient smiling after care" },
+  {
+    src: "/images/clinic-interior.png",
+    alt: "Light-filled consultation room",
+    position: "object-[65%_center]",
+  },
 ];
 
 function Landing() {
   return (
-    <div className="min-h-screen bg-hero">
-      <header className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5">
-        <Logo />
-        <div className="flex gap-2">
-          <Button asChild variant="ghost" className="hidden sm:inline-flex">
-            <Link to="/login" search={{ mode: "patient" }}>
-              Patient Portal
+    <main className="min-h-screen bg-[#f5f1eb] text-[#1b1c19]">
+      <section className="relative min-h-[720px] overflow-hidden bg-[#111312] text-[#f7f3ed] sm:min-h-[780px]">
+        <img
+          src={clinic}
+          alt="Warmly lit treatment room at Dentriq Dental Clinic"
+          className="absolute inset-0 h-full w-full object-cover object-center opacity-70"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(10,12,11,.94)_0%,rgba(10,12,11,.72)_35%,rgba(10,12,11,.1)_78%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(10,12,11,.5),transparent_35%)]" />
+        <header className="relative z-10 mx-auto flex max-w-[1400px] items-center justify-between px-6 py-6 lg:px-12">
+          <Link to="/" aria-label="Dentriq home" className="flex items-center gap-3">
+            <span
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-[#c9ad83]/70 text-[#c9ad83]"
+              aria-hidden="true"
+            >
+              <Sparkles className="h-4 w-4" strokeWidth={1.2} />
+            </span>
+            <span className="leading-none">
+              <span className="block font-serif text-lg tracking-wide text-[#f7f3ed]">Dentriq</span>
+              <span className="mt-1 block text-[8px] uppercase tracking-[0.26em] text-white/55">
+                Dental clinic
+              </span>
+            </span>
+          </Link>
+          <nav
+            className="hidden items-center gap-8 text-[10px] font-medium uppercase tracking-[0.2em] text-white/80 lg:flex"
+            aria-label="Primary navigation"
+          >
+            <a href="#home" className="transition hover:text-white">
+              Home
+            </a>
+            <a href="#about" className="transition hover:text-white">
+              About
+            </a>
+            <a href="#services" className="transition hover:text-white">
+              Services
+            </a>
+            <a href="#gallery" className="transition hover:text-white">
+              Gallery
+            </a>
+            <a href="#contact" className="transition hover:text-white">
+              Contact
+            </a>
+          </nav>
+          <div className="flex items-center gap-5">
+            <Link
+              to="/login"
+              search={{ mode: "patient" }}
+              className="hidden border border-white/45 px-5 py-2.5 text-[10px] font-medium uppercase tracking-[0.16em] transition hover:bg-white hover:text-[#171815] sm:inline-flex"
+            >
+              Book appointment
             </Link>
-          </Button>
-          <Button asChild>
-            <Link to="/login" search={{ mode: "staff" }}>
-              Staff Login
+            <button
+              type="button"
+              aria-label="Open navigation menu"
+              className="text-white/80 transition hover:text-white lg:hidden"
+            >
+              <Menu className="h-5 w-5" />
+            </button>
+          </div>
+        </header>
+        <div
+          id="home"
+          className="relative z-10 mx-auto flex max-w-[1400px] items-center px-6 pb-28 pt-24 lg:min-h-[610px] lg:px-16 lg:pt-12"
+        >
+          <div className="max-w-[560px]">
+            <p className="mb-6 text-[10px] font-medium uppercase tracking-[0.32em] text-[#c9ad83]">
+              Thoughtful dental care
+            </p>
+            <h1 className="max-w-[620px] font-serif text-6xl leading-[0.92] tracking-[-0.04em] text-[#f8f4ee] sm:text-7xl lg:text-[7.2rem]">
+              Smiles
+              <br />
+              that last
+              <br />a lifetime.
+            </h1>
+            <p className="mt-8 max-w-[380px] text-sm leading-6 text-white/75 sm:text-base">
+              Advanced dental care with a gentle touch, for a healthier, brighter smile.
+            </p>
+            <Link
+              to="/login"
+              search={{ mode: "patient" }}
+              className="mt-8 inline-flex items-center gap-7 bg-[#c8a77a] px-6 py-4 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#1b1c19] transition hover:bg-[#dfc49e]"
+            >
+              Book appointment <ArrowRight className="h-4 w-4" />
             </Link>
-          </Button>
-        </div>
-      </header>
-
-      <section className="mx-auto grid max-w-7xl items-center gap-10 px-5 pb-16 pt-8 lg:grid-cols-2 lg:pt-14">
-        <div>
-          <p className="mb-4 inline-flex items-center gap-2 rounded-full border bg-card/70 px-3 py-1 text-xs font-semibold text-primary">
-            For Cruz Nery Dental Clinic
-          </p>
-          <h1 className="text-4xl font-extrabold leading-[1.08] tracking-tight md:text-6xl">
-            Dentriq
-          </h1>
-          <p className="mt-4 text-xl font-semibold text-foreground/80 md:text-2xl">
-            AI-Assisted Dental Clinic Information System with 3D Odontogram and Intelligent Workflow
-            Automation
-          </p>
-          <p className="mt-4 max-w-xl text-muted-foreground">
-            Centralized patient records, OCR-assisted registration, a walk-in-first workflow,
-            dentist-arranged follow-ups, FIFO inventory, AI forecasting and secure information-only
-            patient access — in one place.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Button asChild size="lg">
-              <Link to="/login" search={{ mode: "staff" }}>
-                Staff Login <ArrowRight className="ml-1 h-4 w-4" />
-              </Link>
-            </Button>
-            <Button asChild size="lg" variant="outline">
-              <Link to="/login" search={{ mode: "patient" }}>
-                Patient Portal
-              </Link>
-            </Button>
           </div>
         </div>
-        <div className="relative">
-          <img
-            src={clinic}
-            alt="Bright treatment room at Cruz Nery Dental Clinic"
-            width={1280}
-            height={896}
-            className="aspect-[4/3] w-full rounded-3xl object-cover shadow-lift"
-          />
-          <div className="absolute -bottom-6 left-4 right-4 rounded-2xl border bg-card/95 p-4 shadow-lift backdrop-blur sm:left-auto sm:w-80">
-            <p className="text-sm font-semibold">
-              Safer treatment decisions with built-in review checks.
-            </p>
-            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-              Dentriq helps clinic staff review important changes and relevant information before
-              proceeding with supported workflows.
-            </p>
-          </div>
+        <div className="absolute bottom-7 left-6 z-10 flex items-center gap-3 text-[9px] uppercase tracking-[0.22em] text-white/75 lg:left-16">
+          <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/40">
+            <ArrowDown className="h-3.5 w-3.5" />
+          </span>
+          Scroll to explore
         </div>
       </section>
 
-      <section className="bg-card/70 py-16">
-        <div className="mx-auto max-w-7xl px-5">
-          <h2 className="text-2xl font-bold md:text-3xl">Everything the clinic runs on</h2>
-          <p className="mt-2 text-muted-foreground">Ten modules, one consistent workspace.</p>
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            {FEATURES.map((f) => (
+      <section id="services" className="bg-[#f5f1eb] px-6 py-20 lg:px-16 lg:py-24">
+        <div className="mx-auto max-w-[1200px]">
+          <div className="text-center">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-[#9a7a52]">
+              Our expertise
+            </p>
+            <h2 className="mt-4 font-serif text-4xl tracking-[-0.03em] sm:text-5xl">
+              Holistic care tailored to you
+            </h2>
+          </div>
+          <div className="mt-14 grid grid-cols-2 border-y border-[#d8d0c4] lg:grid-cols-4">
+            {SERVICES.map((service) => (
               <div
-                key={f.t}
-                className="rounded-2xl border bg-card p-5 shadow-soft transition hover:-translate-y-0.5 hover:shadow-lift"
+                key={service.title}
+                className="border-[#d8d0c4] px-5 py-9 text-center first:border-r last:border-l even:border-l lg:border-l lg:px-8 lg:py-10 lg:first:border-l-0"
               >
-                <span className="inline-flex rounded-xl bg-primary-soft p-2 text-primary">
-                  <f.icon className="h-5 w-5" />
+                <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-[#b9b0a4] text-[#866746]">
+                  <service.icon className="h-5 w-5" strokeWidth={1.25} />
                 </span>
-                <h3 className="mt-3 text-sm font-semibold">{f.t}</h3>
-                <p className="mt-1 text-xs text-muted-foreground">{f.d}</p>
+                <h3 className="mt-5 font-serif text-lg">{service.title}</h3>
+                <p className="mx-auto mt-2 max-w-[180px] text-xs leading-5 text-[#777168]">
+                  {service.body}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-10 px-5 py-16 lg:grid-cols-2">
-        <div>
-          <h2 className="text-2xl font-bold md:text-3xl">How it works</h2>
-          <p className="mt-2 text-muted-foreground">
-            A walk-in-first workflow with human verification at every step.
-          </p>
-          <ol className="mt-6 space-y-3">
-            {STEPS.map((s, i) => (
-              <li key={s} className="flex gap-4 rounded-xl border bg-card p-4 shadow-soft">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
-                  {i + 1}
-                </span>
-                <span className="text-sm">{s}</span>
-              </li>
-            ))}
-          </ol>
-        </div>
-        <div className="space-y-4 lg:pt-16">
-          <Callout tone="primary" title="Patients don't book follow-ups">
-            Follow-up schedules are arranged by your dentist or authorized clinic staff. Patients
-            cannot book, cancel, or reschedule schedules through the portal — they see their own
-            schedules and instructions.
-          </Callout>
-          <Callout tone="info" title="AI is decision support only">
-            AI organizes authorized information and flags scheduling or inventory risks. It never
-            diagnoses, prescribes, or finalizes changes.
-          </Callout>
-          <div className="grid grid-cols-3 gap-3 pt-2">
-            {[
-              { i: ClipboardCheck, l: "Verified records" },
-              { i: BarChart3, l: "Operational reports" },
-              { i: ShieldCheck, l: "Audit trail" },
-            ].map((x) => (
-              <div key={x.l} className="rounded-xl border bg-card p-4 text-center shadow-soft">
-                <x.i className="mx-auto h-5 w-5 text-primary" />
-                <p className="mt-2 text-xs font-semibold">{x.l}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <footer className="border-t bg-card/80">
-        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-8 text-sm md:flex-row md:items-center md:justify-between">
-          <div>
-            <p className="font-semibold">Cruz Nery Dental Clinic</p>
-            <p className="text-muted-foreground">
-              Developed by Team SmartSmile Tech · Capstone project
+      <section id="gallery" className="bg-[#111612] px-6 py-20 text-[#f7f3ed] lg:px-16 lg:py-24">
+        <div className="mx-auto max-w-[1340px]">
+          <div className="text-center">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-[#c9ad83]">
+              Results & spaces
             </p>
+            <h2 className="mt-4 font-serif text-4xl tracking-[-0.03em] sm:text-5xl">
+              Real care. Real transformation.
+            </h2>
           </div>
-          <p className="text-xs text-muted-foreground">
-            Front-end prototype. Data shown is for demonstration purposes only.
+          <div className="mt-12 grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
+            {GALLERY.map((item, index) => (
+              <div
+                key={`${item.src}-${index}`}
+                className="aspect-[0.86] overflow-hidden rounded-lg bg-[#2a2d27]"
+              >
+                <img
+                  src={item.src}
+                  alt={item.alt}
+                  className={`h-full w-full object-cover transition duration-700 hover:scale-105 ${item.position ?? ""}`}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="about"
+        className="relative min-h-[470px] overflow-hidden bg-[#122018] px-6 py-20 text-[#f7f3ed] lg:px-20 lg:py-24"
+      >
+        <img
+          src="/images/clinic-interior.png"
+          alt="Soft greenery surrounding a calm clinic space"
+          className="absolute inset-0 h-full w-full object-cover opacity-30"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(18,32,24,.98)_0%,rgba(18,32,24,.76)_45%,rgba(18,32,24,.15)_100%)]" />
+        <div className="relative mx-auto max-w-[1200px]">
+          <Star className="h-6 w-6 text-[#c9ad83]" strokeWidth={1.2} />
+          <h2 className="mt-5 max-w-[390px] font-serif text-5xl leading-[0.95] tracking-[-0.03em] sm:text-6xl">
+            Your smile,
+            <br />
+            our passion.
+          </h2>
+          <p className="mt-6 max-w-[340px] text-sm leading-6 text-white/70">
+            Experience personalized dental care in a calm and comfortable environment.
           </p>
+          <Link
+            to="/login"
+            search={{ mode: "patient" }}
+            className="mt-8 inline-flex items-center gap-7 border border-[#c9ad83] px-6 py-4 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#f7f3ed] transition hover:bg-[#c9ad83] hover:text-[#1b1c19]"
+          >
+            Book appointment <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+      </section>
+
+      <footer id="contact" className="bg-[#111312] px-6 py-10 text-[#f7f3ed] lg:px-16">
+        <div className="mx-auto flex max-w-[1340px] flex-col gap-6 border-t border-white/15 pt-7 text-xs sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="font-serif text-xl">Dentriq</p>
+            <p className="mt-1 text-white/50">Thoughtful dental care, beautifully considered.</p>
+          </div>
+          <div className="flex items-center gap-5 text-[10px] uppercase tracking-[0.16em] text-white/60">
+            <Link to="/login" search={{ mode: "patient" }} className="hover:text-white">
+              Patient portal
+            </Link>
+            <Link to="/login" search={{ mode: "staff" }} className="hover:text-white">
+              Staff login
+            </Link>
+          </div>
+          <p className="text-white/40">© 2026 Dentriq Dental Clinic</p>
         </div>
       </footer>
-    </div>
+    </main>
   );
 }
