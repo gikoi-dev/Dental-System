@@ -254,11 +254,44 @@ function Landing() {
               <div className="absolute h-64 w-64 rounded-full bg-[#65f6d2]/25 blur-3xl sm:h-80 sm:w-80" />
               <div className="absolute h-56 w-56 rounded-full border border-[#8cf4d8]/20 sm:h-72 sm:w-72" />
               <div className="relative flex h-72 w-56 items-center justify-center sm:h-[390px] sm:w-[310px]">
-                <img
-                  src="/images/hero-tooth-final.jpg"
-                  alt="Glossy white molar tooth on a blue gradient"
-                  className="relative z-10 h-full w-full object-cover drop-shadow-[0_0_34px_rgba(126,255,222,.7)]"
-                />
+                <svg
+                  viewBox="0 0 736 1311"
+                  role="img"
+                  aria-label="Glossy white molar tooth"
+                  className="relative z-10 h-full w-full overflow-visible drop-shadow-[0_0_34px_rgba(126,255,222,.7)]"
+                >
+                  <defs>
+                    <mask
+                      id="finalToothMask"
+                      maskUnits="userSpaceOnUse"
+                      x="0"
+                      y="0"
+                      width="736"
+                      height="1311"
+                    >
+                      <rect width="736" height="1311" fill="black" />
+                      <path
+                        fill="white"
+                        d="M190 438C175 389 203 367 246 377C275 384 296 405 326 418C353 429 379 395 423 387C459 380 486 398 509 419C533 397 568 405 588 432C611 463 595 519 581 565C568 609 550 650 547 705C544 767 551 828 535 882C523 924 503 974 480 1020C463 1053 439 1055 425 1026L389 957L367 1095C362 1125 342 1142 324 1114L291 1000L257 1111C239 1140 218 1124 213 1094L190 959L155 1027C141 1056 117 1053 100 1021C77 975 57 924 45 882C29 828 36 767 33 705C30 650 12 609 -1 565C-15 519 -31 463 -8 432C12 405 47 397 71 419C94 398 121 380 157 387C201 395 227 429 254 418C284 405 305 384 334 377C377 367 405 389 390 438C363 421 337 422 306 444C277 466 260 492 230 493C208 494 195 470 190 438Z"
+                      />
+                      <path
+                        fill="black"
+                        d="M238 919C259 890 279 894 293 930L307 1000L257 1111C241 1135 222 1120 216 1092L190 959Z"
+                      />
+                      <path
+                        fill="black"
+                        d="M391 918C407 890 429 894 446 925L463 994L425 1026L389 957Z"
+                      />
+                    </mask>
+                  </defs>
+                  <image
+                    href="/images/hero-tooth-final.jpg"
+                    width="736"
+                    height="1311"
+                    preserveAspectRatio="none"
+                    mask="url(#finalToothMask)"
+                  />
+                </svg>
               </div>
               {[
                 ["top-5 left-0", "Expert care", ShieldCheck],
