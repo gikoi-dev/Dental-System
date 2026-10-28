@@ -1,5 +1,9 @@
-import { useEffect, useRef, useState } from "react";
-import { Minus, Plus, RotateCcw } from "lucide-react";
+import { Canvas, useThree } from "@react-three/fiber";
+import { ContactShadows, OrbitControls } from "@react-three/drei";
+import { useMemo, useRef, useState, useEffect } from "react";
+import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
+import * as THREE from "three";
+import { Minus, Plus, RotateCcw, View } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   CONDITION_META,
@@ -9,24 +13,264 @@ import {
   type ToothRecord,
 } from "@/lib/mock-data";
 import { cn } from "@/lib/utils";
-import { getToothOrientation } from "./odontogram-orientation";
 
-const FILL: Record<ToothCondition, string> = {
-  healthy: "from-card to-success-soft border-success/50",
-  review: "from-warning-soft to-warning/40 border-warning",
-  treated: "from-info-soft to-info/40 border-info",
-  attention: "from-danger-soft to-danger/45 border-danger",
-  missing: "from-muted to-muted border-dashed border-neutral/50 opacity-60",
+const ARCHES = { upper: UPPER, lower: LOWER } as const;
+const STATUS_COLORS: Record<ToothCondition, string> = {
+  healthy: "#dcefe8",
+  review: "#f4dba4",
+  treated: "#c8e1f2",
+  attention: "#efb5b5",
+  missing: "#cbd5e1",
 };
-const SIZE: Record<number, number> = { 8: 34, 7: 36, 6: 38, 5: 28, 4: 28, 3: 26, 2: 24, 1: 28 };
+
+type ToothKind = "incisor" | "canine" | "premolar" | "molar";
+type ViewPreset = "combined" | "front" | "upper" | "lower";
+
+function toothKind(number: number): ToothKind {
+  const position = number % 10;
+  if (position <= 2) return "incisor";
+  if (position === 3) return "canine";
+  if (position <= 5) return "premolar";
+  return "molar";
+}
+
+function toothDimensions(kind: ToothKind) {
+  return {
+    incisor: { width: 0.42, height: 0.82, depth: 0.3, bevel: 0.08 },
+    canine: { width: 0.46, height: 0.78, depth: 0.34, bevel: 0.09 },
+    premolar: { width: 0.58, height: 0.68, depth: 0.44, bevel: 0.1 },
+    molar: { width: 0.76, height: 0.62, depth: 0.58, bevel: 0.12 },
+  }[kind];
+}
+
+function createCrownGeometry(kind: ToothKind) {
+  const d = toothDimensions(kind);
+  const shape = new THREE.Shape();
+  const pointed = kind === "canine";
+  const halfW = d.width / 2;
+  const halfH = d.height / 2;
+  shape.moveTo(-halfW * 0.72, -halfH);
+  shape.quadraticCurveTo(-halfW, -halfH * 0.48, -halfW * 0.82, halfH * 0.38);
+  if (pointed) {
+    shape.lineTo(0, halfH);
+    shape.lineTo(halfW * 0.82, halfH * 0.38);
+  } else {
+    shape.quadraticCurveTo(-halfW * 0.4, halfH, 0, halfH * 0.92);
+    shape.quadraticCurveTo(halfW * 0.4, halfH, halfW * 0.82, halfH * 0.38);
+  }
+  shape.quadraticCurveTo(halfW, -halfH * 0.48, halfW * 0.72, -halfH);
+  shape.quadraticCurveTo(0, -halfH * 1.08, -halfW * 0.72, -halfH);
+  return new THREE.ExtrudeGeometry(shape, {
+    depth: d.depth,
+    bevelEnabled: true,
+    bevelSegments: 3,
+    bevelSize: d.bevel,
+    bevelThickness: d.bevel * 0.65,
+    curveSegments: 8,
+  });
+}
+
+function ToothMesh({
+  number,
+  tooth,
+  selected,
+  upper,
+  index,
+  onSelect,
+}: {
+  number: number;
+  tooth: ToothRecord;
+  selected: boolean;
+  upper: boolean;
+  index: number;
+  onSelect: (number: number) => void;
+}) {
+  const kind = toothKind(number);
+  const geometry = useMemo(() => createCrownGeometry(kind), [kind]);
+  const dimensions = toothDimensions(kind);
+  const angle = Math.PI * (0.12 + (0.76 * index) / 7);
+  const radiusX = upper ? 3.05 : 2.82;
+  const radiusZ = upper ? 1.48 : 1.28;
+  const position: [number, number, number] = [
+    -Math.cos(angle) * radiusX,
+    upper ? 0.85 : -0.82,
+    Math.sin(angle) * radiusZ,
+  ];
+  const tangent = (upper ? -1 : 1) * (angle - Math.PI / 2) * 0.42;
+  const missing = tooth.condition === "missing";
+
+  useEffect(() => () => geometry.dispose(), [geometry]);
+
+  return (
+    <group
+      position={position}
+      rotation={[upper ? -0.16 : 0.16, tangent, upper ? 0.04 : -0.04]}
+      onClick={(event) => {
+        event.stopPropagation();
+        onSelect(number);
+      }}
+      onPointerOver={(event) => {
+        event.stopPropagation();
+        document.body.style.cursor = "pointer";
+      }}
+      onPointerOut={() => {
+        document.body.style.cursor = "default";
+      }}
+      userData={{ fdi: number }}
+    >
+      <mesh geometry={geometry} castShadow receiveShadow scale={missing ? 0.92 : 1}>
+        <meshStandardMaterial
+          color={STATUS_COLORS[tooth.condition]}
+          roughness={0.34}
+          metalness={0.02}
+          transparent={missing}
+          opacity={missing ? 0.32 : 1}
+          emissive={selected ? "#0f766e" : "#000000"}
+          emissiveIntensity={selected ? 0.24 : 0}
+        />
+      </mesh>
+      {kind === "molar" && !missing ? (
+        <group position={[0, dimensions.height * 0.48, dimensions.depth + 0.03]}>
+          {[
+            [-0.18, -0.12],
+            [0.18, -0.12],
+            [-0.18, 0.12],
+            [0.18, 0.12],
+          ].map(([x, y]) => (
+            <mesh key={`${x}-${y}`} position={[x, y, 0]} scale={[0.11, 0.09, 0.06]} castShadow>
+              <sphereGeometry args={[1, 12, 8]} />
+              <meshStandardMaterial color="#f8faf9" roughness={0.4} />
+            </mesh>
+          ))}
+        </group>
+      ) : null}
+      {selected ? (
+        <mesh position={[0, 0, -0.08]} scale={[1.12, 1.1, 0.7]}>
+          <sphereGeometry args={[0.5, 20, 12]} />
+          <meshBasicMaterial color="#14b8a6" transparent opacity={0.2} depthWrite={false} />
+        </mesh>
+      ) : null}
+    </group>
+  );
+}
+
+function GumArch({ upper }: { upper: boolean }) {
+  const curve = useMemo(() => {
+    const points = Array.from({ length: 20 }, (_, index) => {
+      const angle = Math.PI * (0.12 + (0.76 * index) / 19);
+      return new THREE.Vector3(
+        -Math.cos(angle) * (upper ? 3.18 : 2.95),
+        upper ? 0.45 : -0.45,
+        Math.sin(angle) * (upper ? 1.62 : 1.4),
+      );
+    });
+    return new THREE.CatmullRomCurve3(points);
+  }, [upper]);
+
+  return (
+    <mesh>
+      <tubeGeometry args={[curve, 48, 0.13, 8, false]} />
+      <meshStandardMaterial color="#d98f91" roughness={0.72} transparent opacity={0.58} />
+    </mesh>
+  );
+}
+
+function CameraRig({ preset, zoom }: { preset: ViewPreset; zoom: number }) {
+  const { camera } = useThree();
+  const controls = useRef<OrbitControlsImpl>(null);
+
+  useEffect(() => {
+    const positions: Record<ViewPreset, [number, number, number]> = {
+      combined: [0, 4.5, 8.8],
+      front: [0, 0.4, 10.5],
+      upper: [0, 8.6, 0.8],
+      lower: [0, -8.6, 0.8],
+    };
+    const [x, y, z] = positions[preset];
+    camera.position.set(x / zoom, y / zoom, z / zoom);
+    controls.current?.target.set(0, 0, 0);
+    controls.current?.update();
+  }, [camera, preset, zoom]);
+
+  return (
+    <OrbitControls
+      ref={controls}
+      makeDefault
+      enablePan
+      enableDamping
+      dampingFactor={0.08}
+      minDistance={5.5}
+      maxDistance={15}
+      maxPolarAngle={Math.PI * 0.92}
+      minPolarAngle={Math.PI * 0.08}
+    />
+  );
+}
+
+function DentalScene({
+  teeth,
+  selected,
+  onSelect,
+  preset,
+  zoom,
+}: {
+  teeth: Record<number, ToothRecord>;
+  selected?: number;
+  onSelect: (number: number) => void;
+  preset: ViewPreset;
+  zoom: number;
+}) {
+  return (
+    <>
+      <color attach="background" args={["#eef7f5"]} />
+      <ambientLight intensity={1.5} />
+      <directionalLight
+        position={[4, 7, 6]}
+        intensity={3.2}
+        castShadow
+        shadow-mapSize={[1024, 1024]}
+      />
+      <directionalLight position={[-5, 2, -4]} intensity={1.1} color="#b5d9e7" />
+      <GumArch upper />
+      <GumArch upper={false} />
+      {ARCHES.upper.map((number, index) => (
+        <ToothMesh
+          key={number}
+          number={number}
+          tooth={teeth[number]}
+          selected={selected === number}
+          upper
+          index={index}
+          onSelect={onSelect}
+        />
+      ))}
+      {ARCHES.lower.map((number, index) => (
+        <ToothMesh
+          key={number}
+          number={number}
+          tooth={teeth[number]}
+          selected={selected === number}
+          upper={false}
+          index={index}
+          onSelect={onSelect}
+        />
+      ))}
+      <ContactShadows position={[0, -1.6, 0]} opacity={0.28} scale={9} blur={2.4} far={7} />
+      <CameraRig preset={preset} zoom={zoom} />
+    </>
+  );
+}
 
 export function Legend() {
   return (
     <div className="flex flex-wrap gap-3 text-xs">
-      {(Object.keys(CONDITION_META) as ToothCondition[]).map((c) => (
-        <span key={c} className="flex items-center gap-1.5">
-          <span className={cn("h-3 w-3 rounded border bg-gradient-to-b", FILL[c])} />
-          {CONDITION_META[c].label}
+      {(Object.keys(CONDITION_META) as ToothCondition[]).map((condition) => (
+        <span key={condition} className="flex items-center gap-1.5">
+          <span
+            className="h-3 w-3 rounded-full border"
+            style={{ backgroundColor: STATUS_COLORS[condition] }}
+          />
+          {CONDITION_META[condition].label}
         </span>
       ))}
     </div>
@@ -44,160 +288,123 @@ export function Odontogram3D({
   onSelect: (n: number) => void;
   simple?: boolean;
 }) {
-  const [rx, setRx] = useState(simple ? 0 : 48);
-  const [rz, setRz] = useState(0);
+  const [preset, setPreset] = useState<ViewPreset>(simple ? "front" : "combined");
+  const [error, setError] = useState(false);
   const [zoom, setZoom] = useState(1);
-  const [pan, setPan] = useState({ x: 0, y: 0 });
-  const [compact, setCompact] = useState(false);
-  const drag = useRef<{ x: number; y: number; shift: boolean; moved: boolean } | null>(null);
-
-  useEffect(() => {
-    const media = window.matchMedia("(max-width: 640px)");
-    const update = () => setCompact(media.matches);
-    update();
-    media.addEventListener("change", update);
-    return () => media.removeEventListener("change", update);
-  }, []);
-
-  const reset = () => {
-    setRx(simple ? 0 : 48);
-    setRz(0);
-    setZoom(1);
-    setPan({ x: 0, y: 0 });
-  };
-
-  function place(list: number[], upper: boolean) {
-    return list.map((n, i) => {
-      const a = Math.PI * (0.06 + (0.88 * i) / (list.length - 1));
-      const x = -Math.cos(a) * 210;
-      const y = (upper ? -1 : 1) * (Math.sin(a) * 138 + 24);
-      const s = Math.round(SIZE[n % 10] * 1.16);
-      const t = teeth[n];
-      const orientation = getToothOrientation(upper, a);
-      return (
-        <button
-          key={n}
-          type="button"
-          onClick={() => !drag.current?.moved && onSelect(n)}
-          aria-label={`Tooth ${n}, ${CONDITION_META[t.condition].label}`}
-          aria-pressed={selected === n}
-          className="absolute left-1/2 top-1/2 preserve-3d focus-visible:outline-none"
-          style={{
-            transform: `translate3d(${x - s / 2}px, ${y - s / 2}px, 0) rotateZ(${orientation.archRotation - rz}deg) rotateX(${-rx}deg)`,
-          }}
-        >
-          <span
-            className={cn(
-              "relative flex items-center justify-center overflow-visible border-2 bg-gradient-to-b text-[10px] font-bold text-foreground/80 shadow-[inset_0_-5px_0_oklch(0.2_0.03_220_/_10%),0_4px_5px_oklch(0.2_0.03_220_/_18%)] transition-transform hover:scale-110",
-              FILL[t.condition],
-              selected === n && "scale-125 ring-4 ring-primary/40",
-            )}
-            style={{
-              width: s,
-              height: s * 1.15,
-              borderRadius: upper
-                ? `${s / 2.2}px ${s / 2.2}px ${s / 3}px ${s / 3}px`
-                : `${s / 3}px ${s / 3}px ${s / 2.2}px ${s / 2.2}px`,
-              transform: `rotateZ(${orientation.faceRotation}deg) scale(${selected === n ? 1.25 : 1})`,
-            }}
-          >
-            <span
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-[22%] rounded-[45%] border border-white/35 bg-white/20 shadow-[inset_0_1px_2px_oklch(1_0_0_/_35%)]"
-            />
-            <span
-              className="relative z-10"
-              style={{ transform: `rotateZ(${-orientation.faceRotation}deg)` }}
-            >
-              {n}
-            </span>
-          </span>
-        </button>
-      );
-    });
-  }
+  const presetLabels: Array<[ViewPreset, string]> = [
+    ["combined", "Combined"],
+    ["front", "Front"],
+    ["upper", "Upper occlusal"],
+    ["lower", "Lower occlusal"],
+  ];
 
   return (
-    <div className="relative">
-      <div
-        className="relative h-[440px] touch-none select-none overflow-hidden rounded-2xl border bg-gradient-to-b from-primary-soft/60 to-card dot-grid"
-        style={{ perspective: "1100px", cursor: drag.current ? "grabbing" : "grab" }}
-        onPointerDown={(e) => {
-          drag.current = {
-            x: e.clientX,
-            y: e.clientY,
-            shift: e.shiftKey || e.button === 2,
-            moved: false,
-          };
-        }}
-        onPointerMove={(e) => {
-          const d = drag.current;
-          if (!d) return;
-          const dx = e.clientX - d.x,
-            dy = e.clientY - d.y;
-          if (Math.abs(dx) + Math.abs(dy) > 3) d.moved = true;
-          if (d.shift) setPan((p) => ({ x: p.x + dx, y: p.y + dy }));
-          else {
-            setRz((r) => r + dx * 0.4);
-            setRx((r) => Math.max(0, Math.min(75, r - dy * 0.3)));
-          }
-          d.x = e.clientX;
-          d.y = e.clientY;
-        }}
-        onPointerUp={() => setTimeout(() => (drag.current = null), 0)}
-        onPointerLeave={() => (drag.current = null)}
-        onWheel={(e) => setZoom((z) => Math.max(0.6, Math.min(1.8, z - e.deltaY * 0.001)))}
-        onContextMenu={(e) => e.preventDefault()}
-      >
-        <div
-          className="absolute inset-0 preserve-3d"
-          style={{
-            transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom * (compact ? 0.68 : 1)}) rotateX(${rx}deg) rotateZ(${rz}deg)`,
-          }}
-        >
-          <div className="absolute left-1/2 top-1/2 h-[320px] w-[500px] -translate-x-1/2 -translate-y-[calc(50%+22px)] rounded-[50%_50%_10%_10%] border-[14px] border-b-0 bg-danger-soft/20 border-danger-soft opacity-90" />
-          <div className="absolute left-1/2 top-1/2 h-[320px] w-[500px] -translate-x-1/2 -translate-y-[calc(50%-22px)] rounded-[10%_10%_50%_50%] border-[14px] border-t-0 bg-danger-soft/20 border-danger-soft opacity-90" />
-          {place(UPPER, true)}
-          {place(LOWER, false)}
+    <div className="relative space-y-3">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary">
+            Anatomical viewer
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Select a tooth to review its clinical record.
+          </p>
         </div>
-        <span className="absolute left-3 top-3 rounded-md bg-card/80 px-2 py-1 text-[11px] font-semibold text-muted-foreground">
-          Upper arch
-        </span>
-        <span className="absolute bottom-3 left-3 rounded-md bg-card/80 px-2 py-1 text-[11px] font-semibold text-muted-foreground">
-          Lower arch
-        </span>
+        <div className="flex flex-wrap gap-1" role="group" aria-label="Odontogram camera view">
+          {presetLabels.map(([value, label]) => (
+            <Button
+              key={value}
+              type="button"
+              size="sm"
+              variant={preset === value ? "default" : "outline"}
+              aria-pressed={preset === value}
+              onClick={() => setPreset(value)}
+            >
+              {label}
+            </Button>
+          ))}
+        </div>
+      </div>
+      <div className="relative h-[480px] overflow-hidden rounded-2xl border bg-[#eef7f5] shadow-soft sm:h-[560px]">
+        {error ? (
+          <div className="flex h-full flex-col items-center justify-center gap-2 p-6 text-center">
+            <View className="h-8 w-8 text-muted-foreground" />
+            <p className="font-semibold">3D viewer unavailable</p>
+            <p className="max-w-sm text-sm text-muted-foreground">
+              Use the accessible tooth list below to review the same clinical records.
+            </p>
+          </div>
+        ) : (
+          <Canvas
+            camera={{ position: [0, 4.5, 8.8], fov: 38, near: 0.1, far: 100 }}
+            shadows
+            dpr={[1, 1.75]}
+            fallback={
+              <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
+                WebGL is not available in this browser.
+              </div>
+            }
+            onCreated={() => setError(false)}
+            onError={() => setError(true)}
+          >
+            <DentalScene
+              teeth={teeth}
+              selected={selected}
+              onSelect={onSelect}
+              preset={preset}
+              zoom={zoom}
+            />
+          </Canvas>
+        )}
         <div className="absolute right-3 top-3 flex flex-col gap-1">
           <Button
+            type="button"
             size="icon"
             variant="outline"
-            className="h-8 w-8"
+            className="h-8 w-8 bg-card/90"
             aria-label="Zoom in"
-            onClick={() => setZoom((z) => Math.min(1.8, z + 0.15))}
+            onClick={() => setZoom((value) => Math.min(1.35, value + 0.1))}
           >
             <Plus className="h-4 w-4" />
           </Button>
           <Button
+            type="button"
             size="icon"
             variant="outline"
-            className="h-8 w-8"
+            className="h-8 w-8 bg-card/90"
             aria-label="Zoom out"
-            onClick={() => setZoom((z) => Math.max(0.6, z - 0.15))}
+            onClick={() => setZoom((value) => Math.max(0.8, value - 0.1))}
           >
             <Minus className="h-4 w-4" />
           </Button>
           <Button
+            type="button"
             size="icon"
             variant="outline"
-            className="h-8 w-8"
+            className="h-8 w-8 bg-card/90"
             aria-label="Reset view"
-            onClick={reset}
+            onClick={() => {
+              setPreset(simple ? "front" : "combined");
+              setZoom(1);
+            }}
           >
             <RotateCcw className="h-4 w-4" />
           </Button>
         </div>
-        <p className="absolute bottom-3 right-3 hidden rounded-md bg-card/80 px-2 py-1 text-[11px] text-muted-foreground sm:block">
-          Drag to rotate · Shift/right-drag to pan · Scroll to zoom
+        <p className="absolute bottom-3 left-3 rounded-md bg-card/85 px-2 py-1 text-[11px] text-muted-foreground">
+          Drag to rotate · Scroll to zoom · Right-drag to pan
         </p>
+      </div>
+      <div className="sr-only" aria-label="Accessible tooth selection">
+        {Object.values(teeth).map((tooth) => (
+          <button
+            key={tooth.number}
+            type="button"
+            aria-pressed={selected === tooth.number}
+            onClick={() => onSelect(tooth.number)}
+          >
+            Tooth {tooth.number}, {CONDITION_META[tooth.condition].label}
+          </button>
+        ))}
       </div>
     </div>
   );
