@@ -253,63 +253,13 @@ function Landing() {
             <div className="relative mx-auto flex min-h-[330px] w-full max-w-[580px] items-center justify-center lg:min-h-[520px]">
               <div className="absolute h-64 w-64 rounded-full bg-[#65f6d2]/25 blur-3xl sm:h-80 sm:w-80" />
               <div className="absolute h-56 w-56 rounded-full border border-[#8cf4d8]/20 sm:h-72 sm:w-72" />
-              <svg
-                viewBox="0 0 240 300"
-                role="img"
-                aria-label="Glowing anatomical tooth with two cusps and roots"
-                className="relative h-72 w-56 overflow-visible drop-shadow-[0_0_34px_rgba(126,255,222,.7)] sm:h-[390px] sm:w-[310px]"
-              >
-                <defs>
-                  <linearGradient id="toothFill" x1="24%" y1="0%" x2="78%" y2="100%">
-                    <stop offset="0%" stopColor="#ffffff" stopOpacity=".98" />
-                    <stop offset="28%" stopColor="#bafff4" stopOpacity=".94" />
-                    <stop offset="62%" stopColor="#1de9b6" stopOpacity=".86" />
-                    <stop offset="100%" stopColor="#082c20" stopOpacity=".96" />
-                  </linearGradient>
-                  <radialGradient id="toothHighlight" cx="35%" cy="20%" r="70%">
-                    <stop offset="0%" stopColor="#ffffff" stopOpacity=".72" />
-                    <stop offset="55%" stopColor="#d7fff8" stopOpacity=".12" />
-                    <stop offset="100%" stopColor="#d7fff8" stopOpacity="0" />
-                  </radialGradient>
-                  <filter id="toothGlow" x="-45%" y="-35%" width="190%" height="180%">
-                    <feGaussianBlur stdDeviation="9" result="blur" />
-                    <feMerge>
-                      <feMergeNode in="blur" />
-                      <feMergeNode in="SourceGraphic" />
-                    </feMerge>
-                  </filter>
-                </defs>
-                <path
-                  d="M120 18C102 18 92 34 83 40C74 34 64 18 46 22C26 27 19 50 25 79C32 111 45 135 51 164C56 187 59 211 70 238C75 250 83 251 89 242L105 213L120 279L135 213L151 242C157 251 165 250 170 238C181 211 184 187 189 164C195 135 208 111 215 79C221 50 214 27 194 22C176 18 166 34 157 40C148 34 138 18 120 18Z"
-                  fill="url(#toothFill)"
-                  stroke="#d9fff6"
-                  strokeWidth="3.5"
-                  strokeLinejoin="round"
-                  filter="url(#toothGlow)"
+              <div className="relative flex h-72 w-56 items-center justify-center sm:h-[390px] sm:w-[310px]">
+                <img
+                  src="/images/hero-tooth.jpg"
+                  alt="Glossy white molar tooth"
+                  className="relative z-10 h-full w-full object-contain mix-blend-screen drop-shadow-[0_0_34px_rgba(126,255,222,.7)]"
                 />
-                <path
-                  d="M120 26C106 27 98 45 83 51C69 44 58 29 47 32C36 35 31 51 35 73C42 105 56 128 61 159C66 185 66 205 75 226"
-                  fill="none"
-                  stroke="#ffffff"
-                  strokeOpacity=".72"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M120 34C111 43 108 53 108 70C108 88 112 102 120 111C128 102 132 88 132 70C132 53 129 43 120 34Z"
-                  fill="url(#toothHighlight)"
-                  opacity=".9"
-                />
-                <path
-                  d="M52 164C75 178 96 181 120 181C144 181 165 178 188 164M105 213L120 279L135 213"
-                  fill="none"
-                  stroke="#8cf4d8"
-                  strokeOpacity=".52"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              </div>
               {[
                 ["top-5 left-0", "Expert care", ShieldCheck],
                 ["right-0 top-20", "Patient comfort", HeartHandshake],
