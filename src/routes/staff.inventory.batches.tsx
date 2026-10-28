@@ -23,7 +23,7 @@ import {
   selectCls,
 } from "@/components/app/kit";
 import { ITEMS, PROCEDURES } from "@/lib/mock-data";
-import { confirmMaterialConsumption, fifoPlan, itemName } from "@/lib/mock-service";
+import { confirmMaterialConsumption, DEMO_TODAY, fifoPlan, itemName } from "@/lib/mock-service";
 import { useStore } from "@/lib/store";
 import { can } from "@/lib/permissions";
 
@@ -176,7 +176,7 @@ function Batches() {
             <Field
               label="Expiry date"
               required
-              error={r.expiry <= "2026-10-19" ? "Expiry must be in the future." : undefined}
+              error={r.expiry <= DEMO_TODAY ? "Expiry must be in the future." : undefined}
             >
               <Input
                 type="date"
@@ -190,7 +190,7 @@ function Batches() {
               Cancel
             </Button>
             <Button
-              disabled={r.qty < 1 || r.expiry <= "2026-10-19"}
+              disabled={r.qty < 1 || r.expiry <= DEMO_TODAY}
               onClick={() => {
                 const id = `B-${2000 + batches.length}`;
                 setBatches((all) => [

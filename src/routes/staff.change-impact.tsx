@@ -53,6 +53,7 @@ function Page() {
                     setShown(null);
                     setAck(false);
                   }}
+                  aria-pressed={sel === s.id}
                   className={cn(
                     "w-full rounded-xl border p-3 text-left transition hover:border-primary",
                     sel === s.id && "border-primary bg-primary-soft",

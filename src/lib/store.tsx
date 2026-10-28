@@ -49,8 +49,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [audit, setAudit] = useState<Audit[]>(AUDIT);
 
   useEffect(() => {
-    const r = localStorage.getItem(KEY) as Role | null;
+    const stored = localStorage.getItem(KEY);
+    const r = stored && DEMO_USERS[stored as Role] ? (stored as Role) : null;
     if (r) setRoleState(r);
+    else if (stored) localStorage.removeItem(KEY);
     setHydrated(true);
   }, []);
 

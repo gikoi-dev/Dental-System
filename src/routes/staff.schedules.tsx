@@ -118,6 +118,7 @@ function Schedules() {
             <button
               key={m}
               onClick={() => setMode(m)}
+              aria-pressed={mode === m}
               className={cn(
                 "rounded-md px-3 py-1.5 text-sm font-medium capitalize",
                 mode === m && "bg-primary text-primary-foreground",
@@ -325,6 +326,8 @@ function Schedules() {
                         !["Cancelled", "Completed"].includes(s.status) &&
                         (setEditing(s), setOpen(true))
                       }
+                      disabled={!editable || ["Cancelled", "Completed"].includes(s.status)}
+                      aria-label={`${s.start} ${s.patient} ${s.procedure}`}
                       className={cn(
                         "w-full rounded-lg border-l-4 bg-muted/50 p-1.5 text-left text-[11px] hover:bg-accent",
                         s.status === "Needs Review"

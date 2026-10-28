@@ -282,14 +282,21 @@ function s0(clash: Schedule, d: Partial<Schedule>): [CheckStatus, string] {
 }
 
 // ---------- FIFO ----------
+export const DEMO_TODAY = "2026-10-28";
 const INELIGIBLE = ["Expired", "Damaged", "Recalled", "Unavailable"];
+const isExpired = (batch: Batch) => batch.expiry <= DEMO_TODAY;
+const isEligible = (batch: Batch) =>
+  !INELIGIBLE.includes(batch.status) && !isExpired(batch) && batch.remaining > 0;
+
 export function fifoPlan(batches: Batch[], procedure: string) {
   const needs = PROCEDURE_MATERIALS[procedure] ?? [];
   return needs.map((n) => {
     const eligible = batches
-      .filter((b) => b.itemId === n.itemId && !INELIGIBLE.includes(b.status) && b.remaining > 0)
+      .filter((b) => b.itemId === n.itemId && isEligible(b))
       .sort((a, b) => a.received.localeCompare(b.received));
-    const excluded = batches.filter((b) => b.itemId === n.itemId && INELIGIBLE.includes(b.status));
+    const excluded = batches.filter(
+      (b) => b.itemId === n.itemId && (INELIGIBLE.includes(b.status) || isExpired(b)),
+    );
     let left = n.qty;
     const picks: { batchId: string; qty: number; before: number }[] = [];
     for (const b of eligible) {
@@ -324,7 +331,7 @@ export const reserveMaterials = (batchId: string, qty: number) => ({ batchId, qt
 
 export const getInventoryForecast = (batches: Batch[]) =>
   FORECAST.map((f) => {
-    const bs = batches.filter((b) => b.itemId === f.itemId && !INELIGIBLE.includes(b.status));
+    const bs = batches.filter((b) => b.itemId === f.itemId && isEligible(b));
     const current = bs.reduce((a, b) => a + b.remaining, 0);
     const reserved = bs.reduce((a, b) => a + b.reserved, 0);
     return {
