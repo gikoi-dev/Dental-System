@@ -1,5 +1,5 @@
-import { Canvas, useThree } from "@react-three/fiber";
-import { ContactShadows, OrbitControls } from "@react-three/drei";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { ContactShadows, Html, OrbitControls } from "@react-three/drei";
 import { useMemo, useRef, useState, useEffect } from "react";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import * as THREE from "three";
@@ -12,7 +12,6 @@ import {
   type ToothCondition,
   type ToothRecord,
 } from "@/lib/mock-data";
-import { cn } from "@/lib/utils";
 
 const ARCHES = { upper: UPPER, lower: LOWER } as const;
 const STATUS_COLORS: Record<ToothCondition, string> = {
@@ -144,6 +143,25 @@ function ToothMesh({
           ))}
         </group>
       ) : null}
+      <Html
+        position={[-Math.cos(angle) * 0.42, upper ? 0.1 : -0.1, Math.sin(angle) * 0.42]}
+        center
+        distanceFactor={8}
+        occlude={false}
+      >
+        <button
+          type="button"
+          aria-label={`Select tooth ${number}`}
+          aria-pressed={selected}
+          onClick={(event) => {
+            event.stopPropagation();
+            onSelect(number);
+          }}
+          className={`rounded-full border px-1.5 py-0.5 text-[10px] font-semibold shadow-sm transition ${selected ? "border-primary bg-primary text-primary-foreground" : "border-border/80 bg-card/95 text-foreground hover:border-primary"}`}
+        >
+          {number}
+        </button>
+      </Html>
       {selected ? (
         <mesh position={[0, 0, -0.08]} scale={[1.12, 1.1, 0.7]}>
           <sphereGeometry args={[0.5, 20, 12]} />
@@ -169,8 +187,8 @@ function GumArch({ upper }: { upper: boolean }) {
 
   return (
     <mesh>
-      <tubeGeometry args={[curve, 48, 0.13, 8, false]} />
-      <meshStandardMaterial color="#d98f91" roughness={0.72} transparent opacity={0.58} />
+      <tubeGeometry args={[curve, 48, 0.24, 10, false]} />
+      <meshStandardMaterial color="#d98f91" roughness={0.72} transparent opacity={0.68} />
     </mesh>
   );
 }
@@ -178,6 +196,7 @@ function GumArch({ upper }: { upper: boolean }) {
 function CameraRig({ preset, zoom }: { preset: ViewPreset; zoom: number }) {
   const { camera, size } = useThree();
   const controls = useRef<OrbitControlsImpl>(null);
+  const targetPosition = useRef(new THREE.Vector3(0, 4.5, 8.8));
 
   useEffect(() => {
     const positions: Record<ViewPreset, [number, number, number]> = {
@@ -188,14 +207,18 @@ function CameraRig({ preset, zoom }: { preset: ViewPreset; zoom: number }) {
     };
     const [x, y, z] = positions[preset];
     const responsiveDistance = size.width < 600 ? 1.45 : 1;
-    camera.position.set(
+    targetPosition.current.set(
       (x * responsiveDistance) / zoom,
       (y * responsiveDistance) / zoom,
       (z * responsiveDistance) / zoom,
     );
     controls.current?.target.set(0, 0, 0);
-    controls.current?.update();
   }, [camera, preset, size.width, zoom]);
+
+  useFrame((_, delta) => {
+    camera.position.lerp(targetPosition.current, 1 - Math.exp(-delta * 7));
+    controls.current?.update();
+  });
 
   return (
     <OrbitControls
