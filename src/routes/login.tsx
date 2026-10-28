@@ -82,10 +82,10 @@ function Login() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-hero p-4">
-      <div className="w-full max-w-md">
+    <div className="login-stage flex min-h-screen items-center justify-center bg-hero p-4">
+      <div className="relative z-10 w-full max-w-md">
         <Link to="/" className="mb-6 flex justify-center">
-          <Logo inverse />
+          <Logo />
         </Link>
         <div className="rounded-3xl border bg-card p-6 shadow-lift md:p-8">
           {signedOut && step === "cred" && (
