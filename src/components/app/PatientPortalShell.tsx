@@ -1,11 +1,10 @@
 import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import {
-  Bell,
   BookOpen,
-  ClipboardList,
   FileText,
   Home,
   LogOut,
+  MessageSquare,
   ShieldCheck,
   UserRound,
 } from "lucide-react";
@@ -19,8 +18,8 @@ const NAV = [
   { to: "/patient/dashboard", label: "Home", icon: Home },
   { to: "/patient/records", label: "My records", icon: FileText },
   { to: "/patient/tooth-history", label: "Tooth history", icon: UserRound },
-  { to: "/patient/schedules", label: "Follow-up schedules", icon: ClipboardList },
-  { to: "/patient/notifications", label: "Notifications", icon: Bell },
+  { to: "/patient/schedules", label: "Follow-up schedules", icon: MessageSquare },
+  { to: "/patient/notifications", label: "Notifications", icon: MessageSquare },
   { to: "/patient/instructions", label: "Instructions", icon: BookOpen },
   { to: "/patient/profile", label: "Profile", icon: ShieldCheck },
 ] as const;
