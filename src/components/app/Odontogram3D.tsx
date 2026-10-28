@@ -19,6 +19,13 @@ const FILL: Record<ToothCondition, string> = {
 };
 const SIZE: Record<number, number> = { 8: 34, 7: 36, 6: 38, 5: 28, 4: 28, 3: 26, 2: 24, 1: 28 };
 
+export function getToothOrientation(upper: boolean) {
+  return {
+    jaw: upper ? "maxillary" : "mandibular",
+    faceRotation: upper ? 0 : 180,
+  } as const;
+}
+
 export function Legend() {
   return (
     <div className="flex flex-wrap gap-3 text-xs">
@@ -63,6 +70,7 @@ export function Odontogram3D({
       const y = (upper ? -1 : 1) * (Math.sin(a) * 120 + 22);
       const s = SIZE[n % 10];
       const t = teeth[n];
+      const orientation = getToothOrientation(upper);
       return (
         <button
           key={n}
@@ -87,9 +95,10 @@ export function Odontogram3D({
               borderRadius: upper
                 ? `${s / 2.2}px ${s / 2.2}px ${s / 3}px ${s / 3}px`
                 : `${s / 3}px ${s / 3}px ${s / 2.2}px ${s / 2.2}px`,
+              transform: `rotateZ(${orientation.faceRotation}deg) scale(${selected === n ? 1.25 : 1})`,
             }}
           >
-            {n}
+            <span style={{ transform: `rotateZ(${-orientation.faceRotation}deg)` }}>{n}</span>
           </span>
         </button>
       );
