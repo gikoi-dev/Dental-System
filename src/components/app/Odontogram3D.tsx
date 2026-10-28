@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Minus, Plus, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -48,7 +48,16 @@ export function Odontogram3D({
   const [rz, setRz] = useState(0);
   const [zoom, setZoom] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
+  const [compact, setCompact] = useState(false);
   const drag = useRef<{ x: number; y: number; shift: boolean; moved: boolean } | null>(null);
+
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 640px)");
+    const update = () => setCompact(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
 
   const reset = () => {
     setRx(simple ? 0 : 48);
@@ -60,11 +69,11 @@ export function Odontogram3D({
   function place(list: number[], upper: boolean) {
     return list.map((n, i) => {
       const a = Math.PI * (0.06 + (0.88 * i) / (list.length - 1));
-      const x = -Math.cos(a) * 190;
-      const y = (upper ? -1 : 1) * (Math.sin(a) * 120 + 22);
-      const s = SIZE[n % 10];
+      const x = -Math.cos(a) * 210;
+      const y = (upper ? -1 : 1) * (Math.sin(a) * 138 + 24);
+      const s = Math.round(SIZE[n % 10] * 1.16);
       const t = teeth[n];
-      const orientation = getToothOrientation(upper);
+      const orientation = getToothOrientation(upper, a);
       return (
         <button
           key={n}
@@ -74,12 +83,12 @@ export function Odontogram3D({
           aria-pressed={selected === n}
           className="absolute left-1/2 top-1/2 preserve-3d focus-visible:outline-none"
           style={{
-            transform: `translate3d(${x - s / 2}px, ${y - s / 2}px, 0) rotateZ(${-rz}deg) rotateX(${-rx}deg)`,
+            transform: `translate3d(${x - s / 2}px, ${y - s / 2}px, 0) rotateZ(${orientation.archRotation - rz}deg) rotateX(${-rx}deg)`,
           }}
         >
           <span
             className={cn(
-              "flex items-center justify-center border-2 bg-gradient-to-b text-[10px] font-bold text-foreground/80 shadow-soft transition-transform hover:scale-110",
+              "relative flex items-center justify-center overflow-visible border-2 bg-gradient-to-b text-[10px] font-bold text-foreground/80 shadow-[inset_0_-5px_0_oklch(0.2_0.03_220_/_10%),0_4px_5px_oklch(0.2_0.03_220_/_18%)] transition-transform hover:scale-110",
               FILL[t.condition],
               selected === n && "scale-125 ring-4 ring-primary/40",
             )}
@@ -92,7 +101,16 @@ export function Odontogram3D({
               transform: `rotateZ(${orientation.faceRotation}deg) scale(${selected === n ? 1.25 : 1})`,
             }}
           >
-            <span style={{ transform: `rotateZ(${-orientation.faceRotation}deg)` }}>{n}</span>
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-[22%] rounded-[45%] border border-white/35 bg-white/20 shadow-[inset_0_1px_2px_oklch(1_0_0_/_35%)]"
+            />
+            <span
+              className="relative z-10"
+              style={{ transform: `rotateZ(${-orientation.faceRotation}deg)` }}
+            >
+              {n}
+            </span>
           </span>
         </button>
       );
@@ -134,11 +152,11 @@ export function Odontogram3D({
         <div
           className="absolute inset-0 preserve-3d"
           style={{
-            transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom}) rotateX(${rx}deg) rotateZ(${rz}deg)`,
+            transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom * (compact ? 0.68 : 1)}) rotateX(${rx}deg) rotateZ(${rz}deg)`,
           }}
         >
-          <div className="absolute left-1/2 top-1/2 h-[290px] w-[440px] -translate-x-1/2 -translate-y-[calc(50%+18px)] rounded-[50%_50%_10%_10%] border-[14px] border-b-0 border-danger-soft opacity-80" />
-          <div className="absolute left-1/2 top-1/2 h-[290px] w-[440px] -translate-x-1/2 -translate-y-[calc(50%-18px)] rounded-[10%_10%_50%_50%] border-[14px] border-t-0 border-danger-soft opacity-80" />
+          <div className="absolute left-1/2 top-1/2 h-[320px] w-[500px] -translate-x-1/2 -translate-y-[calc(50%+22px)] rounded-[50%_50%_10%_10%] border-[14px] border-b-0 bg-danger-soft/20 border-danger-soft opacity-90" />
+          <div className="absolute left-1/2 top-1/2 h-[320px] w-[500px] -translate-x-1/2 -translate-y-[calc(50%-22px)] rounded-[10%_10%_50%_50%] border-[14px] border-t-0 bg-danger-soft/20 border-danger-soft opacity-90" />
           {place(UPPER, true)}
           {place(LOWER, false)}
         </div>
