@@ -14,6 +14,7 @@ import { useStore } from "@/lib/store";
 export const Route = createFileRoute("/login")({
   validateSearch: (s: Record<string, unknown>) => ({
     mode: s.mode === "patient" ? ("patient" as const) : ("staff" as const),
+    signedOut: s.signedOut === "true" || s.signedOut === "1" || s.signedOut === true,
   }),
   head: () => ({
     meta: [
@@ -32,7 +33,7 @@ export const Route = createFileRoute("/login")({
 const STAFF_ROLES: Role[] = ["admin", "dentist", "receptionist", "inventory", "management"];
 
 function Login() {
-  const { mode } = Route.useSearch();
+  const { mode, signedOut } = Route.useSearch();
   const nav = useNavigate();
   const { setRole, log } = useStore();
   const [tab, setTab] = useState<"staff" | "patient">(mode);
@@ -87,6 +88,16 @@ function Login() {
           <Logo />
         </Link>
         <div className="rounded-3xl border bg-card p-6 shadow-lift md:p-8">
+          {signedOut && step === "cred" && (
+            <div
+              className="mb-5 rounded-xl border border-success/30 bg-success/10 px-4 py-3 text-sm text-success"
+              data-testid="signed-out-status"
+              role="status"
+              aria-live="polite"
+            >
+              Signed out successfully.
+            </div>
+          )}
           {step === "cred" ? (
             <>
               <Tabs value={tab} onValueChange={switchTab}>

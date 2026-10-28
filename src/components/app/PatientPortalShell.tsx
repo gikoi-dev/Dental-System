@@ -45,7 +45,7 @@ export function PatientPortalShell({
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-20 border-b bg-card/95 backdrop-blur">
+      <header className="sticky top-0 z-50 border-b bg-card/95 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3">
           <Logo />
           <Button
@@ -55,7 +55,7 @@ export function PatientPortalShell({
             aria-label="Log out of patient portal"
             onClick={() => {
               setRole(null);
-              nav({ to: "/login", search: { mode: "patient" } });
+              nav({ to: "/login", search: { mode: "patient", signedOut: true } });
             }}
           >
             <LogOut className="mr-1.5 h-4 w-4" /> Log out
