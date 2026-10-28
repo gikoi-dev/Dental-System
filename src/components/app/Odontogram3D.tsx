@@ -176,7 +176,7 @@ function GumArch({ upper }: { upper: boolean }) {
 }
 
 function CameraRig({ preset, zoom }: { preset: ViewPreset; zoom: number }) {
-  const { camera } = useThree();
+  const { camera, size } = useThree();
   const controls = useRef<OrbitControlsImpl>(null);
 
   useEffect(() => {
@@ -187,10 +187,15 @@ function CameraRig({ preset, zoom }: { preset: ViewPreset; zoom: number }) {
       lower: [0, -8.6, 0.8],
     };
     const [x, y, z] = positions[preset];
-    camera.position.set(x / zoom, y / zoom, z / zoom);
+    const responsiveDistance = size.width < 600 ? 1.45 : 1;
+    camera.position.set(
+      (x * responsiveDistance) / zoom,
+      (y * responsiveDistance) / zoom,
+      (z * responsiveDistance) / zoom,
+    );
     controls.current?.target.set(0, 0, 0);
     controls.current?.update();
-  }, [camera, preset, zoom]);
+  }, [camera, preset, size.width, zoom]);
 
   return (
     <OrbitControls
