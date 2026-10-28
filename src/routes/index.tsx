@@ -103,8 +103,28 @@ const STEPS = [
 function Landing() {
   return (
     <div className="min-h-screen bg-hero">
-      <header className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5">
+      <header className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 lg:px-8">
         <Logo />
+        <nav aria-label="Primary navigation" className="hidden items-center gap-7 md:flex">
+          <a
+            href="#capabilities"
+            className="text-sm font-medium text-muted-foreground transition hover:text-foreground"
+          >
+            Capabilities
+          </a>
+          <a
+            href="#workflow"
+            className="text-sm font-medium text-muted-foreground transition hover:text-foreground"
+          >
+            Workflow
+          </a>
+          <a
+            href="#responsible-ai"
+            className="text-sm font-medium text-muted-foreground transition hover:text-foreground"
+          >
+            Responsible AI
+          </a>
+        </nav>
         <div className="flex gap-2">
           <Button asChild variant="ghost" className="hidden sm:inline-flex">
             <Link to="/login" search={{ mode: "patient" }}>
@@ -119,57 +139,73 @@ function Landing() {
         </div>
       </header>
 
-      <section className="mx-auto grid max-w-7xl items-center gap-10 px-5 pb-16 pt-8 lg:grid-cols-2 lg:pt-14">
-        <div>
-          <p className="mb-4 inline-flex items-center gap-2 rounded-full border bg-card/70 px-3 py-1 text-xs font-semibold text-primary">
-            For Cruz Nery Dental Clinic
+      <section className="mx-auto grid max-w-7xl items-center gap-12 px-5 pb-20 pt-10 lg:grid-cols-[0.9fr_1.1fr] lg:px-8 lg:pb-28 lg:pt-16">
+        <div className="max-w-2xl">
+          <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary-soft/70 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-primary">
+            <span className="h-1.5 w-1.5 rounded-full bg-primary" aria-hidden />
+            Clinic operations, made clear
           </p>
-          <h1 className="text-4xl font-extrabold leading-[1.08] tracking-tight md:text-6xl">
-            Dentriq
+          <h1 className="text-5xl font-extrabold leading-[1.02] tracking-[-0.04em] md:text-7xl">
+            The calmer way to run a dental clinic.
           </h1>
-          <p className="mt-4 text-xl font-semibold text-foreground/80 md:text-2xl">
-            AI-Assisted Dental Clinic Information System with 3D Odontogram and Intelligent Workflow
-            Automation
-          </p>
-          <p className="mt-4 max-w-xl text-muted-foreground">
-            Centralized patient records, OCR-assisted registration, a walk-in-first workflow,
-            dentist-arranged follow-ups, FIFO inventory, AI forecasting and secure information-only
-            patient access — in one place.
+          <p className="mt-6 max-w-xl text-lg leading-8 text-muted-foreground md:text-xl">
+            Dentriq brings patient records, queues, follow-ups, inventory, and clinical context into
+            one verified workspace for Cruz Nery Dental Clinic.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Button asChild size="lg">
+            <Button asChild size="lg" className="h-12 rounded-xl px-5">
               <Link to="/login" search={{ mode: "staff" }}>
-                Staff Login <ArrowRight className="ml-1 h-4 w-4" />
+                Open staff workspace <ArrowRight className="ml-1 h-4 w-4" />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="outline">
+            <Button asChild size="lg" variant="outline" className="h-12 rounded-xl px-5">
               <Link to="/login" search={{ mode: "patient" }}>
-                Patient Portal
+                View patient portal
               </Link>
             </Button>
           </div>
+          <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-xs font-medium text-muted-foreground">
+            <span className="inline-flex items-center gap-2">
+              <ShieldCheck className="h-4 w-4 text-primary" /> Human-verified workflows
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <Lock className="h-4 w-4 text-primary" /> Role-aware access
+            </span>
+          </div>
         </div>
-        <div className="relative">
-          <img
-            src={clinic}
-            alt="Bright treatment room at Cruz Nery Dental Clinic"
-            width={1280}
-            height={896}
-            className="aspect-[4/3] w-full rounded-3xl object-cover shadow-lift"
-          />
-          <div className="absolute -bottom-6 left-4 right-4 rounded-2xl border bg-card/95 p-4 shadow-lift backdrop-blur sm:left-auto sm:w-80">
-            <AIBadge label="Change-Impact Review" />
-            <p className="mt-2 text-sm font-semibold">9 checks passed · 1 warning</p>
-            <p className="text-xs text-muted-foreground">
-              Root canal stage 2 — interval acknowledged by Dr. Cruz
-            </p>
+        <div className="relative lg:pl-6">
+          <div className="absolute -inset-4 rounded-[2rem] bg-primary/10 blur-2xl" aria-hidden />
+          <div className="relative overflow-hidden rounded-[2rem] border bg-card shadow-lift">
+            <img
+              src={clinic}
+              alt="Bright treatment room at Cruz Nery Dental Clinic"
+              width={1280}
+              height={896}
+              className="aspect-[4/3] w-full object-cover"
+            />
+            <div className="absolute inset-x-4 top-4 flex items-center justify-between rounded-xl border bg-card/90 px-3 py-2 shadow-soft backdrop-blur">
+              <span className="text-xs font-semibold">Today at Cruz Nery</span>
+              <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-success">
+                <span className="h-1.5 w-1.5 rounded-full bg-success" /> Workspace ready
+              </span>
+            </div>
+            <div className="absolute -bottom-1 left-4 right-4 rounded-2xl border bg-card/95 p-4 shadow-lift backdrop-blur sm:left-auto sm:w-80">
+              <AIBadge label="Change-Impact Review" />
+              <p className="mt-2 text-sm font-semibold">9 checks passed · 1 warning</p>
+              <p className="text-xs text-muted-foreground">
+                A review surface for staff decisions, not an automated diagnosis.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="bg-card/70 py-16">
-        <div className="mx-auto max-w-7xl px-5">
-          <h2 className="text-2xl font-bold md:text-3xl">Everything the clinic runs on</h2>
+      <section id="capabilities" className="scroll-mt-6 bg-card/70 py-16">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
+            One operational view
+          </p>
+          <h2 className="mt-2 text-2xl font-bold md:text-3xl">Everything the clinic runs on</h2>
           <p className="mt-2 text-muted-foreground">Ten modules, one consistent workspace.</p>
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {FEATURES.map((f) => (
@@ -188,9 +224,15 @@ function Landing() {
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-10 px-5 py-16 lg:grid-cols-2">
+      <section
+        id="workflow"
+        className="mx-auto grid max-w-7xl scroll-mt-6 gap-10 px-5 py-16 lg:grid-cols-2 lg:px-8"
+      >
         <div>
-          <h2 className="text-2xl font-bold md:text-3xl">How it works</h2>
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
+            Designed around verification
+          </p>
+          <h2 className="mt-2 text-2xl font-bold md:text-3xl">How it works</h2>
           <p className="mt-2 text-muted-foreground">
             A walk-in-first workflow with human verification at every step.
           </p>
@@ -205,7 +247,7 @@ function Landing() {
             ))}
           </ol>
         </div>
-        <div className="space-y-4 lg:pt-16">
+        <div id="responsible-ai" className="scroll-mt-6 space-y-4 lg:pt-16">
           <Callout tone="primary" title="Patients don't book follow-ups">
             Follow-up schedules are arranged by your dentist or authorized clinic staff. Patients
             cannot book, cancel, or reschedule schedules through the portal — they see their own
