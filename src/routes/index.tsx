@@ -14,7 +14,6 @@ import {
   UsersRound,
   X,
 } from "lucide-react";
-import clinic from "@/assets/clinic.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -96,17 +95,12 @@ function Landing() {
     <main className="min-h-screen overflow-x-hidden bg-[#071b18] text-[#effcf7]">
       <section
         id="home"
-        className="relative isolate min-h-[760px] overflow-hidden bg-[#05221d] sm:min-h-[820px]"
+        className="relative isolate min-h-[760px] overflow-hidden bg-[#031f1a] sm:min-h-[820px]"
       >
-        <img
-          src={clinic}
-          alt="Calm dental treatment room at Cruz Nery Dental Clinic"
-          className="absolute inset-0 h-full w-full object-cover opacity-35 mix-blend-screen"
-        />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(82,233,204,.27),transparent_32%),linear-gradient(120deg,#06221d_5%,rgba(4,39,32,.88)_48%,rgba(5,45,38,.5))]" />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,27,24,.35),#071b18_97%)]" />
-        <div className="relative z-10 mx-auto max-w-[1280px] px-5 pb-20 pt-5 sm:px-8 lg:px-12">
-          <header className="flex items-center justify-between rounded-2xl border border-white/15 bg-white/[.07] px-4 py-3 shadow-[0_12px_60px_rgba(0,0,0,.16)] backdrop-blur-xl sm:px-6">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_58%,rgba(54,217,179,.2),transparent_24%),radial-gradient(circle_at_16%_42%,rgba(19,91,77,.28),transparent_30%),linear-gradient(115deg,#03231d_0%,#062b24_52%,#031c18_100%)]" />
+        <div className="absolute inset-0 opacity-30 [background-image:linear-gradient(rgba(153,255,225,.035)_1px,transparent_1px),linear-gradient(90deg,rgba(153,255,225,.035)_1px,transparent_1px)] [background-size:72px_72px]" />
+        <div className="relative z-10 mx-auto max-w-[1280px] px-5 pb-16 pt-5 sm:px-8 lg:px-12">
+          <header className="flex items-center justify-between rounded-[22px] border border-white/15 bg-white/[.07] px-4 py-3 shadow-[0_12px_60px_rgba(0,0,0,.16)] backdrop-blur-xl sm:px-6">
             <Link to="/" aria-label="Dentriq home" className="flex items-center gap-2.5">
               <span
                 className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#8cf4d8]/70 text-[#8cf4d8]"
@@ -213,13 +207,19 @@ function Landing() {
               </Link>
             </nav>
           )}
-          <div className="grid items-center gap-12 pb-8 pt-24 lg:grid-cols-[.92fr_1.08fr] lg:gap-4 lg:pt-28">
+          <div className="grid items-center gap-8 pb-4 pt-24 lg:min-h-[650px] lg:grid-cols-[.92fr_1.08fr] lg:gap-4 lg:pt-24">
             <div>
               <p className="mb-6 text-xs font-medium uppercase tracking-[.28em] text-[#91f5d8]">
                 Thoughtful dental care
               </p>
-              <h1 className="max-w-[680px] text-6xl font-semibold leading-[.91] tracking-[-.07em] text-white sm:text-8xl lg:text-[7.8rem]">
-                Healthier smiles <span className="text-[#80f1d3]">brighter lives.</span>
+              <h1 className="max-w-[650px] text-7xl font-semibold leading-[.83] tracking-[-.085em] text-white sm:text-8xl lg:text-[7.7rem]">
+                Healthier
+                <br />
+                smiles
+                <br />
+                <span className="text-[#77efd0]">brighter</span>
+                <br />
+                <span className="text-[#77efd0]">lives.</span>
               </h1>
               <p className="mt-8 max-w-[440px] text-base leading-7 text-white/70 sm:text-lg">
                 Personalized dental care designed around your needs, comfort, and long-term oral
@@ -250,7 +250,7 @@ function Landing() {
                 </Link>
               </p>
             </div>
-            <div className="relative mx-auto flex min-h-[330px] w-full max-w-[580px] items-center justify-center lg:min-h-[480px]">
+            <div className="relative mx-auto flex min-h-[330px] w-full max-w-[580px] items-center justify-center lg:min-h-[520px]">
               <div className="absolute h-64 w-64 rounded-full bg-[#65f6d2]/25 blur-3xl sm:h-80 sm:w-80" />
               <div className="absolute h-56 w-56 rounded-full border border-[#8cf4d8]/20 sm:h-72 sm:w-72" />
               <div className="relative flex h-56 w-44 items-center justify-center rounded-[48%_48%_42%_42%] border-4 border-[#d9fff6]/80 bg-[radial-gradient(circle_at_35%_25%,#fff,#a7fff0_35%,#48cdb5_72%,#19796c)] shadow-[0_0_50px_rgba(156,255,232,.75),inset_-20px_-20px_40px_rgba(0,55,47,.26)] sm:h-72 sm:w-56">
