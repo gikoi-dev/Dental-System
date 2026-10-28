@@ -1,5 +1,13 @@
 import { Link, useLocation, useNavigate } from "@tanstack/react-router";
-import { FileText, Home, LogOut, MessageSquare, UserRound } from "lucide-react";
+import {
+  BookOpen,
+  FileText,
+  Home,
+  LogOut,
+  MessageSquare,
+  ShieldCheck,
+  UserRound,
+} from "lucide-react";
 import { useEffect, type ReactNode } from "react";
 import { Logo } from "@/components/app/Logo";
 import { Button } from "@/components/ui/button";
@@ -12,6 +20,8 @@ const NAV = [
   { to: "/patient/tooth-history", label: "Tooth history", icon: UserRound },
   { to: "/patient/schedules", label: "Follow-up schedules", icon: MessageSquare },
   { to: "/patient/notifications", label: "Notifications", icon: MessageSquare },
+  { to: "/patient/instructions", label: "Instructions", icon: BookOpen },
+  { to: "/patient/profile", label: "Profile", icon: ShieldCheck },
 ] as const;
 
 export function PatientPortalShell({

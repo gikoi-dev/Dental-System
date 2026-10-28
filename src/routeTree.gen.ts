@@ -20,7 +20,9 @@ import { Route as AdminRolesRouteImport } from './routes/admin.roles'
 import { Route as AdminTreatmentPlansRouteImport } from './routes/admin.treatment-plans'
 import { Route as AdminUsersRouteImport } from './routes/admin.users'
 import { Route as PatientDashboardRouteImport } from './routes/patient.dashboard'
+import { Route as PatientInstructionsRouteImport } from './routes/patient.instructions'
 import { Route as PatientNotificationsRouteImport } from './routes/patient.notifications'
+import { Route as PatientProfileRouteImport } from './routes/patient.profile'
 import { Route as PatientRecordsRouteImport } from './routes/patient.records'
 import { Route as PatientSchedulesRouteImport } from './routes/patient.schedules'
 import { Route as PatientToothHistoryRouteImport } from './routes/patient.tooth-history'
@@ -94,9 +96,19 @@ const PatientDashboardRoute = PatientDashboardRouteImport.update({
   path: '/patient/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PatientInstructionsRoute = PatientInstructionsRouteImport.update({
+  id: '/patient/instructions',
+  path: '/patient/instructions',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PatientNotificationsRoute = PatientNotificationsRouteImport.update({
   id: '/patient/notifications',
   path: '/patient/notifications',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PatientProfileRoute = PatientProfileRouteImport.update({
+  id: '/patient/profile',
+  path: '/patient/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PatientRecordsRoute = PatientRecordsRouteImport.update({
@@ -198,7 +210,9 @@ export interface FileRoutesByFullPath {
   '/admin/treatment-plans': typeof AdminTreatmentPlansRoute
   '/admin/users': typeof AdminUsersRoute
   '/patient/dashboard': typeof PatientDashboardRoute
+  '/patient/instructions': typeof PatientInstructionsRoute
   '/patient/notifications': typeof PatientNotificationsRoute
+  '/patient/profile': typeof PatientProfileRoute
   '/patient/records': typeof PatientRecordsRoute
   '/patient/schedules': typeof PatientSchedulesRoute
   '/patient/tooth-history': typeof PatientToothHistoryRoute
@@ -229,7 +243,9 @@ export interface FileRoutesByTo {
   '/admin/treatment-plans': typeof AdminTreatmentPlansRoute
   '/admin/users': typeof AdminUsersRoute
   '/patient/dashboard': typeof PatientDashboardRoute
+  '/patient/instructions': typeof PatientInstructionsRoute
   '/patient/notifications': typeof PatientNotificationsRoute
+  '/patient/profile': typeof PatientProfileRoute
   '/patient/records': typeof PatientRecordsRoute
   '/patient/schedules': typeof PatientSchedulesRoute
   '/patient/tooth-history': typeof PatientToothHistoryRoute
@@ -261,7 +277,9 @@ export interface FileRoutesById {
   '/admin/treatment-plans': typeof AdminTreatmentPlansRoute
   '/admin/users': typeof AdminUsersRoute
   '/patient/dashboard': typeof PatientDashboardRoute
+  '/patient/instructions': typeof PatientInstructionsRoute
   '/patient/notifications': typeof PatientNotificationsRoute
+  '/patient/profile': typeof PatientProfileRoute
   '/patient/records': typeof PatientRecordsRoute
   '/patient/schedules': typeof PatientSchedulesRoute
   '/patient/tooth-history': typeof PatientToothHistoryRoute
@@ -294,7 +312,9 @@ export interface FileRouteTypes {
     | '/admin/treatment-plans'
     | '/admin/users'
     | '/patient/dashboard'
+    | '/patient/instructions'
     | '/patient/notifications'
+    | '/patient/profile'
     | '/patient/records'
     | '/patient/schedules'
     | '/patient/tooth-history'
@@ -325,7 +345,9 @@ export interface FileRouteTypes {
     | '/admin/treatment-plans'
     | '/admin/users'
     | '/patient/dashboard'
+    | '/patient/instructions'
     | '/patient/notifications'
+    | '/patient/profile'
     | '/patient/records'
     | '/patient/schedules'
     | '/patient/tooth-history'
@@ -356,7 +378,9 @@ export interface FileRouteTypes {
     | '/admin/treatment-plans'
     | '/admin/users'
     | '/patient/dashboard'
+    | '/patient/instructions'
     | '/patient/notifications'
+    | '/patient/profile'
     | '/patient/records'
     | '/patient/schedules'
     | '/patient/tooth-history'
@@ -383,7 +407,9 @@ export interface RootRouteChildren {
   RecoverAccountRoute: typeof RecoverAccountRoute
   StaffRoute: typeof StaffRouteWithChildren
   PatientDashboardRoute: typeof PatientDashboardRoute
+  PatientInstructionsRoute: typeof PatientInstructionsRoute
   PatientNotificationsRoute: typeof PatientNotificationsRoute
+  PatientProfileRoute: typeof PatientProfileRoute
   PatientRecordsRoute: typeof PatientRecordsRoute
   PatientSchedulesRoute: typeof PatientSchedulesRoute
   PatientToothHistoryRoute: typeof PatientToothHistoryRoute
@@ -468,11 +494,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PatientDashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/patient/instructions': {
+      id: '/patient/instructions'
+      path: '/patient/instructions'
+      fullPath: '/patient/instructions'
+      preLoaderRoute: typeof PatientInstructionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/patient/notifications': {
       id: '/patient/notifications'
       path: '/patient/notifications'
       fullPath: '/patient/notifications'
       preLoaderRoute: typeof PatientNotificationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/patient/profile': {
+      id: '/patient/profile'
+      path: '/patient/profile'
+      fullPath: '/patient/profile'
+      preLoaderRoute: typeof PatientProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/patient/records': {
@@ -658,7 +698,9 @@ const rootRouteChildren: RootRouteChildren = {
   RecoverAccountRoute: RecoverAccountRoute,
   StaffRoute: StaffRouteWithChildren,
   PatientDashboardRoute: PatientDashboardRoute,
+  PatientInstructionsRoute: PatientInstructionsRoute,
   PatientNotificationsRoute: PatientNotificationsRoute,
+  PatientProfileRoute: PatientProfileRoute,
   PatientRecordsRoute: PatientRecordsRoute,
   PatientSchedulesRoute: PatientSchedulesRoute,
   PatientToothHistoryRoute: PatientToothHistoryRoute,
