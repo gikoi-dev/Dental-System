@@ -399,7 +399,7 @@ export function StaffShell() {
                 </DropdownMenuSubContent>
               </DropdownMenuSub>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={logout} className="text-danger">
+              <DropdownMenuItem onClick={logout} className="text-danger" data-testid="staff-logout">
                 <LogOut className="mr-2 h-4 w-4" />
                 Log out
               </DropdownMenuItem>

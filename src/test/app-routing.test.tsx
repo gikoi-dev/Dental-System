@@ -16,6 +16,27 @@ describe("App routing", () => {
   });
 
   it.each([
+    "/login",
+    "/recover-account",
+    "/staff/dashboard",
+    "/staff/patients",
+    "/staff/patients/P-1001",
+    "/staff/registration",
+    "/staff/odontogram/P-1001",
+    "/staff/queue",
+    "/staff/schedules",
+    "/staff/ai-assistant",
+    "/staff/change-impact",
+    "/staff/inventory",
+    "/staff/inventory/batches",
+    "/staff/inventory/forecasts",
+    "/staff/reports",
+    "/staff/audit-logs",
+    "/admin/users",
+    "/admin/roles",
+    "/admin/resources",
+    "/admin/treatment-plans",
+    "/admin/backup",
     "/patient/dashboard",
     "/patient/records",
     "/patient/tooth-history",
@@ -23,7 +44,7 @@ describe("App routing", () => {
     "/patient/notifications",
     "/patient/instructions",
     "/patient/profile",
-  ])("registers the patient portal route %s", (path) => {
+  ])("registers the required route %s", (path) => {
     const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
 
     expect(router.matchRoutes(path).at(-1)?.routeId).not.toBe(rootRouteId);
