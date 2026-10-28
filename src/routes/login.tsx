@@ -21,10 +21,13 @@ export const Route = createFileRoute("/login")({
       { title: "Sign in — Dentriq" },
       {
         name: "description",
-        content: "Staff and patient portal sign-in for Dentriq at Cruz Nery Dental Clinic.",
+        content: "Demo staff and patient sign-in flow for the Dentriq frontend prototype.",
       },
       { property: "og:title", content: "Sign in — Dentriq" },
-      { property: "og:description", content: "Secure sign-in with multi-factor verification." },
+      {
+        property: "og:description",
+        content: "Demo staff and patient sign-in flow for the Dentriq frontend prototype.",
+      },
     ],
   }),
   component: Login,
