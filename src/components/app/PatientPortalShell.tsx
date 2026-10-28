@@ -45,7 +45,7 @@ export function PatientPortalShell({
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-50 border-b bg-card/95 backdrop-blur">
+      <header className="sticky top-0 z-50 border-b border-border/80 bg-card/95 shadow-soft backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3">
           <Logo />
           <Button

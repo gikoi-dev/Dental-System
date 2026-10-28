@@ -12,14 +12,18 @@ export function ToothMark({ className }: { className?: string }) {
   );
 }
 
-export function Logo({ compact }: { compact?: boolean }) {
+export function Logo({ compact, inverse }: { compact?: boolean; inverse?: boolean }) {
   return (
     <div className="flex items-center gap-2.5">
       <ToothMark />
       {!compact && (
         <div className="leading-tight">
-          <p className="text-base font-bold tracking-tight">Dentriq</p>
-          <p className="text-[11px] text-muted-foreground">Cruz Nery Dental Clinic</p>
+          <p className={cn("text-base font-bold tracking-tight", inverse && "text-white")}>
+            Dentriq
+          </p>
+          <p className={cn("text-[11px]", inverse ? "text-white/60" : "text-muted-foreground")}>
+            Cruz Nery Dental Clinic
+          </p>
         </div>
       )}
     </div>

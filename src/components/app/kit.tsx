@@ -168,7 +168,7 @@ export function StatCard({
   hint?: string;
 }) {
   return (
-    <div className="rounded-2xl border bg-card p-4 shadow-soft">
+    <div className="rounded-2xl border border-border/80 bg-card p-4 shadow-soft transition-shadow">
       <div className="flex items-start justify-between gap-2">
         <p className="text-xs font-medium text-muted-foreground">{label}</p>
         <span className={cn("rounded-lg p-1.5", TONE[tone])}>
@@ -193,7 +193,7 @@ export function Panel({
   className?: string;
 }) {
   return (
-    <section className={cn("rounded-2xl border bg-card shadow-soft", className)}>
+    <section className={cn("rounded-2xl border border-border/80 bg-card shadow-soft", className)}>
       {title && (
         <header className="flex items-center justify-between gap-2 border-b px-5 py-3.5">
           <h2 className="text-base font-semibold">{title}</h2>

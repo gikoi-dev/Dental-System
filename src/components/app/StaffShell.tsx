@@ -294,7 +294,7 @@ export function StaffShell() {
 
   return (
     <div className="min-h-screen bg-background">
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r bg-sidebar lg:flex">
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-sidebar-border bg-sidebar shadow-lift lg:flex">
         <div className="flex h-16 items-center border-b px-5">
           <Link to="/staff/dashboard">
             <Logo />
@@ -319,7 +319,7 @@ export function StaffShell() {
       </Sheet>
 
       <div className="lg:pl-64">
-        <header className="sticky top-0 z-20 flex h-16 items-center gap-3 border-b bg-card/90 px-4 backdrop-blur md:px-6">
+        <header className="sticky top-0 z-20 flex h-16 items-center gap-3 border-b border-border/80 bg-card/90 px-4 shadow-soft backdrop-blur md:px-6">
           <Button
             variant="ghost"
             size="icon"
