@@ -1,9 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { History, Info, ShieldCheck } from "lucide-react";
+import { useMemo, useState } from "react";
+import { History, Info, ListFilter, ShieldCheck } from "lucide-react";
 import { PatientPortalShell } from "@/components/app/PatientPortalShell";
-import { Empty, Panel, StatusBadge } from "@/components/app/kit";
-import { CONDITION_META, getTeethFor, UPPER, LOWER } from "@/lib/mock-data";
+import { PatientToothMap } from "@/components/app/PatientToothMap";
+import { ToothPanel } from "@/components/app/ToothPanel";
+import { Empty, Panel } from "@/components/app/kit";
+import { getTeethFor } from "@/lib/mock-data";
 
 export const Route = createFileRoute("/patient/tooth-history")({
   head: () => ({
@@ -15,133 +17,137 @@ export const Route = createFileRoute("/patient/tooth-history")({
   component: ToothHistory,
 });
 
-const TEETH = [
-  {
-    number: "16",
-    name: "Upper right first molar",
-    condition: "Treated",
-    tone: "info" as const,
-    note: "Filling completed during the last visit.",
-  },
-  {
-    number: "26",
-    name: "Upper left first molar",
-    condition: "For review",
-    tone: "warning" as const,
-    note: "Discuss sensitivity with your dentist at the next visit.",
-  },
-  {
-    number: "36",
-    name: "Lower left first molar",
-    condition: "Healthy",
-    tone: "success" as const,
-    note: "No treatment recorded.",
-  },
-];
-
 function ToothHistory() {
   const teeth = getTeethFor("P-1001");
-  const [selected, setSelected] = useState(26);
-  const tooth = teeth[selected];
+  const [selected, setSelected] = useState<number | null>(26);
+  const [filter, setFilter] = useState<"all" | "recorded">("all");
+  const tooth = selected === null ? undefined : teeth[selected];
+  const recordedTeeth = useMemo(
+    () =>
+      Object.values(teeth).filter(
+        (record) => record.condition !== "healthy" || record.history.length > 0,
+      ),
+    [teeth],
+  );
+  const visibleNumbers =
+    filter === "recorded" ? new Set(recordedTeeth.map((record) => record.number)) : undefined;
   return (
     <PatientPortalShell
       title="Tooth history"
-      description="Select a tooth to review the clinical information shared by your care team."
+      description="Explore the dental information recorded in your clinic records."
     >
-      <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
-        <Panel title="Tooth map">
-          <div className="mb-4 flex flex-wrap gap-2" aria-label="Tooth condition legend">
-            {Object.entries(CONDITION_META).map(([key, meta]) => (
-              <StatusBadge key={key} status={meta.label} tone={meta.tone} />
-            ))}
-          </div>
-          <div className="space-y-3" role="group" aria-label="Selectable teeth">
-            {[UPPER, LOWER].map((row) => (
-              <div key={row[0]} className="grid grid-cols-8 gap-1.5">
-                {row.map((number) => {
-                  const record = teeth[number];
-                  const meta = CONDITION_META[record.condition];
-                  return (
-                    <button
-                      key={number}
-                      type="button"
-                      onClick={() => setSelected(number)}
-                      aria-pressed={selected === number}
-                      aria-label={`Tooth ${number}, ${meta.label}`}
-                      className={`rounded-lg border p-2 text-center text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${selected === number ? "border-primary bg-primary-soft text-primary" : "bg-card hover:bg-muted"}`}
-                    >
-                      <span className="block text-sm">{number}</span>
-                      <span className="sr-only">{meta.label}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            ))}
-          </div>
-          <p className="mt-4 text-xs text-muted-foreground">
-            The diagram is simplified for portal viewing. Labels accompany every color-coded
-            condition.
-          </p>
-        </Panel>
-        {tooth ? (
-          <Panel
-            title={
-              <span className="flex items-center gap-2">
-                <History className="h-4 w-4 text-primary" /> Tooth {tooth.number}
+      <div className="grid gap-4 sm:grid-cols-3">
+        <SummaryCard label="Teeth with recorded history" value={recordedTeeth.length} />
+        <SummaryCard
+          label="Treatments recorded"
+          value={recordedTeeth.filter((record) => record.condition === "treated").length}
+        />
+        <SummaryCard
+          label="Needs review or attention"
+          value={
+            recordedTeeth.filter(
+              (record) => record.condition === "review" || record.condition === "attention",
+            ).length
+          }
+        />
+      </div>
+      <div className="grid gap-4 xl:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)]">
+        <Panel
+          title={
+            <span>
+              Full-mouth overview
+              <span className="mt-0.5 block text-xs font-normal text-muted-foreground">
+                Select any tooth to see its documented history.
               </span>
-            }
-          >
-            <StatusBadge
-              status={CONDITION_META[tooth.condition].label}
-              tone={CONDITION_META[tooth.condition].tone}
-            />
-            <h2 className="mt-3 font-semibold">{tooth.diagnosis}</h2>
-            <p className="mt-2 text-sm text-muted-foreground">{tooth.notes}</p>
-            <dl className="mt-4 space-y-3 text-sm">
-              <div>
-                <dt className="text-muted-foreground">Plan</dt>
-                <dd>{tooth.plan}</dd>
-              </div>
-              <div>
-                <dt className="text-muted-foreground">Recommendation</dt>
-                <dd>{tooth.recommendation}</dd>
-              </div>
-            </dl>
-            {tooth.history.length ? (
-              <div className="mt-5 space-y-3 border-t pt-4">
-                {tooth.history.map((event) => (
-                  <div key={`${event.date}-${event.type}`}>
-                    <p className="text-sm font-medium">
-                      {event.type} · {event.date}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      {event.note} · {event.by}
-                    </p>
-                  </div>
+            </span>
+          }
+          action={
+            <div
+              className="flex items-center gap-1 rounded-lg border p-1"
+              aria-label="Tooth history filter"
+            >
+              <ListFilter className="ml-1 h-3.5 w-3.5 text-muted-foreground" aria-hidden="true" />
+              {(["all", "recorded"] as const).map((value) => (
+                <button
+                  key={value}
+                  type="button"
+                  aria-pressed={filter === value}
+                  onClick={() => setFilter(value)}
+                  className={`rounded-md px-2 py-1 text-xs font-medium ${filter === value ? "bg-primary-soft text-primary" : "text-muted-foreground hover:bg-muted"}`}
+                >
+                  {value === "all" ? "All teeth" : "Recorded only"}
+                </button>
+              ))}
+            </div>
+          }
+        >
+          <PatientToothMap
+            teeth={teeth}
+            selected={selected}
+            onSelect={(number) => setSelected(number)}
+            visibleNumbers={visibleNumbers}
+          />
+          {filter === "recorded" && (
+            <div className="mt-5 border-t pt-4">
+              <p className="mb-2 text-sm font-semibold">Teeth with recorded history</p>
+              <div className="flex flex-wrap gap-2">
+                {recordedTeeth.map((record) => (
+                  <button
+                    key={record.number}
+                    type="button"
+                    onClick={() => setSelected(record.number)}
+                    className={`rounded-full border px-3 py-1.5 text-xs font-semibold ${selected === record.number ? "border-primary bg-primary-soft text-primary" : "hover:bg-muted"}`}
+                  >
+                    Tooth {record.number}
+                  </button>
                 ))}
               </div>
-            ) : (
-              <Empty
-                icon={History}
-                title="No tooth-specific history"
-                body="No treatment event has been recorded for this tooth."
-              />
-            )}
-          </Panel>
-        ) : (
-          <Empty icon={History} title="No tooth record" />
-        )}
+            </div>
+          )}
+        </Panel>
+        <Panel
+          title={
+            <span className="flex items-center gap-2">
+              <History className="h-4 w-4 text-primary" />
+              {tooth ? `Tooth ${tooth.number}` : "Select a tooth"}
+            </span>
+          }
+        >
+          {tooth ? (
+            <ToothPanel tooth={tooth} schedules={[]} editable={false} simple />
+          ) : (
+            <Empty
+              icon={History}
+              title="Select a tooth"
+              body="Choose a tooth on the map to review its recorded information."
+            />
+          )}
+        </Panel>
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="rounded-xl bg-muted/50 p-4">
           <Info className="h-4 w-4 text-primary" />
-          <p className="mt-2 text-sm">Follow the care instructions provided by your clinic.</p>
+          <p className="mt-2 text-sm">
+            Only documented clinic information is shown. An empty history does not confirm that a
+            tooth is healthy.
+          </p>
         </div>
         <div className="rounded-xl bg-muted/50 p-4">
           <ShieldCheck className="h-4 w-4 text-success" />
-          <p className="mt-2 text-sm">Only authorized clinic staff can update this history.</p>
+          <p className="mt-2 text-sm">
+            This portal is view-only. Authorized clinic staff manage clinical records.
+          </p>
         </div>
       </div>
     </PatientPortalShell>
+  );
+}
+
+function SummaryCard({ label, value }: { label: string; value: number }) {
+  return (
+    <div className="rounded-xl border bg-card p-4 shadow-soft">
+      <p className="text-xs font-medium text-muted-foreground">{label}</p>
+      <p className="mt-1 text-2xl font-bold tracking-tight">{value}</p>
+    </div>
   );
 }
