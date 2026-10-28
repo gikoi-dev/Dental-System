@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getToothOrientation } from "@/components/app/Odontogram3D";
+import { getToothOrientation } from "@/components/app/odontogram-orientation";
 
 describe("odontogram jaw orientation", () => {
   it("keeps maxillary teeth in the upper face plane", () => {

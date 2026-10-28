@@ -9,6 +9,7 @@ import {
   type ToothRecord,
 } from "@/lib/mock-data";
 import { cn } from "@/lib/utils";
+import { getToothOrientation } from "./odontogram-orientation";
 
 const FILL: Record<ToothCondition, string> = {
   healthy: "from-card to-success-soft border-success/50",
@@ -18,13 +19,6 @@ const FILL: Record<ToothCondition, string> = {
   missing: "from-muted to-muted border-dashed border-neutral/50 opacity-60",
 };
 const SIZE: Record<number, number> = { 8: 34, 7: 36, 6: 38, 5: 28, 4: 28, 3: 26, 2: 24, 1: 28 };
-
-export function getToothOrientation(upper: boolean) {
-  return {
-    jaw: upper ? "maxillary" : "mandibular",
-    faceRotation: upper ? 0 : 180,
-  } as const;
-}
 
 export function Legend() {
   return (
