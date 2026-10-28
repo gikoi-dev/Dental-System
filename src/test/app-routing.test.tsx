@@ -2,6 +2,7 @@ import { QueryClient } from "@tanstack/react-query";
 import { createRouter, rootRouteId } from "@tanstack/react-router";
 import { describe, expect, it } from "vitest";
 
+import { getStaffLogoutLocation } from "@/components/app/StaffShell";
 import { routeTree } from "@/routeTree.gen";
 
 // Match routes without running loaders or rendering: loaders may need a server or
@@ -48,6 +49,13 @@ describe("App routing", () => {
     const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
 
     expect(router.matchRoutes(path).at(-1)?.routeId).not.toBe(rootRouteId);
+  });
+
+  it("routes staff logout to signed-out staff login", () => {
+    expect(getStaffLogoutLocation()).toEqual({
+      to: "/login",
+      search: { mode: "staff", signedOut: true },
+    });
   });
 
   it.each([

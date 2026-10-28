@@ -225,6 +225,11 @@ function GlobalSearch() {
   );
 }
 
+export const getStaffLogoutLocation = () => ({
+  to: "/login" as const,
+  search: { mode: "staff" as const, signedOut: true as const },
+});
+
 export function StaffShell() {
   const { hydrated, role, setRole, user } = useStore();
   const nav = useNavigate();
@@ -279,7 +284,7 @@ export function StaffShell() {
   const logout = () => {
     setRole(null);
     toast.success("Signed out");
-    nav({ to: "/login", search: { mode: "staff", signedOut: true } });
+    nav(getStaffLogoutLocation());
   };
   const switchRole = (r: Role) => {
     setRole(r);
