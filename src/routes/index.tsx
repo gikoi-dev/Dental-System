@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/app/Logo";
-import { AIBadge, Callout } from "@/components/app/kit";
+import { Callout } from "@/components/app/kit";
 import clinic from "@/assets/clinic.jpg";
 
 export const Route = createFileRoute("/")({
@@ -158,10 +158,12 @@ function Landing() {
             className="aspect-[4/3] w-full rounded-3xl object-cover shadow-lift"
           />
           <div className="absolute -bottom-6 left-4 right-4 rounded-2xl border bg-card/95 p-4 shadow-lift backdrop-blur sm:left-auto sm:w-80">
-            <AIBadge label="Change-Impact Review" />
-            <p className="mt-2 text-sm font-semibold">9 checks passed · 1 warning</p>
-            <p className="text-xs text-muted-foreground">
-              Root canal stage 2 — interval acknowledged by Dr. Cruz
+            <p className="text-sm font-semibold">
+              Safer treatment decisions with built-in review checks.
+            </p>
+            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+              Dentriq helps clinic staff review important changes and relevant information before
+              proceeding with supported workflows.
             </p>
           </div>
         </div>
