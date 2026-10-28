@@ -253,10 +253,52 @@ function Landing() {
             <div className="relative mx-auto flex min-h-[330px] w-full max-w-[580px] items-center justify-center lg:min-h-[520px]">
               <div className="absolute h-64 w-64 rounded-full bg-[#65f6d2]/25 blur-3xl sm:h-80 sm:w-80" />
               <div className="absolute h-56 w-56 rounded-full border border-[#8cf4d8]/20 sm:h-72 sm:w-72" />
-              <div className="relative flex h-56 w-44 items-center justify-center rounded-[48%_48%_42%_42%] border-4 border-[#d9fff6]/80 bg-[radial-gradient(circle_at_35%_25%,#fff,#a7fff0_35%,#48cdb5_72%,#19796c)] shadow-[0_0_50px_rgba(156,255,232,.75),inset_-20px_-20px_40px_rgba(0,55,47,.26)] sm:h-72 sm:w-56">
-                <div className="absolute left-5 top-10 h-8 w-16 rounded-full bg-white/55 blur-md sm:h-10 sm:w-20" />
-                <div className="absolute -bottom-12 h-20 w-44 rounded-[50%] border-t-2 border-[#8cf4d8]/50 bg-[#0d4d42]/50 blur-sm sm:w-56" />
-              </div>
+              <svg
+                viewBox="0 0 240 300"
+                role="img"
+                aria-label="Abstract glowing tooth"
+                className="relative h-72 w-56 overflow-visible drop-shadow-[0_0_34px_rgba(126,255,222,.7)] sm:h-[390px] sm:w-[310px]"
+              >
+                <defs>
+                  <radialGradient id="toothFill" cx="35%" cy="18%" r="90%">
+                    <stop offset="0" stopColor="#ffffff" />
+                    <stop offset="0.34" stopColor="#bafff4" />
+                    <stop offset="0.72" stopColor="#59d9c2" />
+                    <stop offset="1" stopColor="#167365" />
+                  </radialGradient>
+                  <filter id="toothGlow" x="-45%" y="-35%" width="190%" height="180%">
+                    <feGaussianBlur stdDeviation="9" result="blur" />
+                    <feMerge>
+                      <feMergeNode in="blur" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                </defs>
+                <path
+                  d="M120 12C78 12 43 22 29 57c-14 35-8 79 1 113 8 31 17 50 26 63 10 14 23 15 31 4l13-20 20 55 20-55 13 20c8 11 21 10 31-4 9-13 18-32 26-63 9-34 15-78 1-113C197 22 162 12 120 12Z"
+                  fill="url(#toothFill)"
+                  stroke="#d9fff6"
+                  strokeWidth="4"
+                  strokeLinejoin="round"
+                  filter="url(#toothGlow)"
+                />
+                <ellipse
+                  cx="83"
+                  cy="73"
+                  rx="32"
+                  ry="20"
+                  fill="#ffffff"
+                  opacity=".5"
+                  filter="url(#toothGlow)"
+                />
+                <path
+                  d="M48 226c22 15 48 19 72 19s50-4 72-19"
+                  fill="none"
+                  stroke="#8cf4d8"
+                  strokeOpacity=".38"
+                  strokeWidth="2"
+                />
+              </svg>
               {[
                 ["top-5 left-0", "Expert care", ShieldCheck],
                 ["right-0 top-20", "Patient comfort", HeartHandshake],
