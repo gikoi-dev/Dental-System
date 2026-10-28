@@ -1,4 +1,4 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 import {
   Outlet,
   Link,
@@ -126,13 +126,10 @@ function RootShell({ children }: { children: ReactNode }) {
 }
 
 function RootComponent() {
-  const { queryClient } = Route.useRouteContext();
   return (
-    <QueryClientProvider client={queryClient}>
-      <StoreProvider>
-        <Outlet />
-        <Toaster richColors position="top-right" />
-      </StoreProvider>
-    </QueryClientProvider>
+    <StoreProvider>
+      <Outlet />
+      <Toaster richColors position="top-right" />
+    </StoreProvider>
   );
 }
