@@ -128,7 +128,7 @@ function Batches() {
             </Td>
             <Td>
               {fifoPos.get(b.id) ? (
-                <span className="rounded-full bg-primary-soft px-2 py-0.5 text-xs font-bold text-primary">
+                <span className="rounded-full bg-primary-soft px-2 py-0.5 text-xs font-bold text-primary-strong">
                   #{fifoPos.get(b.id)}
                 </span>
               ) : (

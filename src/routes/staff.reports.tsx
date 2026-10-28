@@ -89,7 +89,7 @@ function Reports() {
                 className={cn(
                   "flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-medium",
                   cat === c
-                    ? "bg-primary-soft text-primary"
+                    ? "bg-primary-soft text-primary-strong"
                     : ok
                       ? "hover:bg-muted"
                       : "cursor-not-allowed text-muted-foreground/50",

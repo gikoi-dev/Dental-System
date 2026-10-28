@@ -73,7 +73,7 @@ function ToothHistory() {
                   type="button"
                   aria-pressed={filter === value}
                   onClick={() => setFilter(value)}
-                  className={`rounded-md px-2 py-1 text-xs font-medium ${filter === value ? "bg-primary-soft text-primary" : "text-muted-foreground hover:bg-muted"}`}
+                  className={`rounded-md px-2 py-1 text-xs font-medium ${filter === value ? "bg-primary-soft text-primary-strong" : "text-muted-foreground hover:bg-muted"}`}
                 >
                   {value === "all" ? "All teeth" : "Recorded only"}
                 </button>
@@ -96,7 +96,7 @@ function ToothHistory() {
                     key={record.number}
                     type="button"
                     onClick={() => setSelected(record.number)}
-                    className={`rounded-full border px-3 py-1.5 text-xs font-semibold ${selected === record.number ? "border-primary bg-primary-soft text-primary" : "hover:bg-muted"}`}
+                    className={`rounded-full border px-3 py-1.5 text-xs font-semibold ${selected === record.number ? "border-primary bg-primary-soft text-primary-strong" : "hover:bg-muted"}`}
                   >
                     Tooth {record.number}
                   </button>

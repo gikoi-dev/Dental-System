@@ -20,7 +20,7 @@ const TONE: Record<Tone, string> = {
   warning: "bg-warning-soft text-warning",
   danger: "bg-danger-soft text-danger",
   neutral: "bg-neutral-soft text-neutral",
-  primary: "bg-primary-soft text-primary",
+  primary: "bg-primary-soft text-primary-strong",
 };
 const ICON: Record<Tone, LucideIcon> = {
   success: CheckCircle2,

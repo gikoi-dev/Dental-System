@@ -28,7 +28,7 @@ function Schedules() {
             <article key={schedule.id} className="rounded-2xl border bg-card p-5 shadow-soft">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="flex gap-3">
-                  <span className="rounded-xl bg-primary-soft p-2 text-primary">
+                  <span className="rounded-xl bg-primary-soft p-2 text-primary-strong">
                     <CalendarClock className="h-5 w-5" />
                   </span>
                   <div>

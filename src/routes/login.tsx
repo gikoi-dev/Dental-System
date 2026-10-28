@@ -152,7 +152,7 @@ function Login() {
             </>
           ) : (
             <div className="space-y-5 text-center">
-              <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary-soft text-primary">
+              <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary-soft text-primary-strong">
                 <ShieldCheck className="h-6 w-6" />
               </span>
               <div>

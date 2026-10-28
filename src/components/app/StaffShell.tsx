@@ -422,7 +422,7 @@ export function StaffShell() {
             <button
               onClick={() => setAi(true)}
               aria-label="Open AI assistant"
-              className="fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-lift transition hover:scale-105"
+              className="fixed bottom-5 right-5 z-40 hidden items-center gap-2 rounded-full bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-lift transition hover:scale-105 sm:flex"
             >
               <Sparkles className="h-4 w-4" /> AI Assistant
             </button>

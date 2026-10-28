@@ -69,7 +69,7 @@ export function PatientPortalShell({
             <Link
               key={to}
               to={to}
-              className={`inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-transparent px-3 py-2 text-sm font-medium transition-colors ${location.pathname === to ? "border-primary/15 bg-primary-soft text-primary" : "text-muted-foreground hover:border-border hover:bg-muted hover:text-foreground"}`}
+              className={`inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-transparent px-3 py-2 text-sm font-medium transition-colors ${location.pathname === to ? "border-primary-strong/20 bg-primary-soft text-primary-strong" : "text-muted-foreground hover:border-border hover:bg-muted hover:text-foreground"}`}
             >
               <Icon className="h-4 w-4" /> {label}
             </Link>

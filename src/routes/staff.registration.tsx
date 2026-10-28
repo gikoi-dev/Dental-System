@@ -170,7 +170,7 @@ function Registration() {
               drag ? "border-primary bg-primary-soft" : "border-border",
             )}
           >
-            <span className="rounded-2xl bg-primary-soft p-4 text-primary">
+            <span className="rounded-2xl bg-primary-soft p-4 text-primary-strong">
               <ScanLine className="h-8 w-8" />
             </span>
             <h2 className="mt-4 text-lg font-semibold">Drop the scanned registration form here</h2>
