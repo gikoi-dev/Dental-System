@@ -51,6 +51,8 @@ export function PatientPortalShell({
           <Button
             variant="ghost"
             size="sm"
+            data-testid="patient-logout"
+            aria-label="Log out of patient portal"
             onClick={() => {
               setRole(null);
               nav({ to: "/login", search: { mode: "patient" } });
