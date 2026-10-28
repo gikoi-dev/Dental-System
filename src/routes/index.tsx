@@ -3,7 +3,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { DentriqTooth3D } from "@/components/app/DentriqTooth3D";
 import {
   ArrowRight,
-  Check,
   ChevronDown,
   ClipboardCheck,
   HeartHandshake,
@@ -127,7 +126,6 @@ function Landing() {
                 ["About", "about"],
                 ["Services", "services"],
                 ["Our approach", "approach"],
-                ["Technology & care", "technology"],
                 ["Contact", "contact"],
               ].map(([label, id]) => (
                 <a key={id} href={sectionLink(id)} className="transition hover:text-[#a5f7df]">
@@ -172,22 +170,20 @@ function Landing() {
               className="mt-2 grid gap-1 rounded-2xl border border-white/15 bg-[#0a3029]/95 p-3 text-sm shadow-xl backdrop-blur-xl lg:hidden"
               aria-label="Mobile navigation"
             >
-              {["home", "about", "services", "approach", "technology", "contact"].map((id) => (
+              {["home", "about", "services", "approach", "contact"].map((id) => (
                 <a
                   key={id}
                   href={`#${id}`}
                   onClick={closeMenu}
                   className="rounded-xl px-3 py-2 capitalize text-white/80 hover:bg-white/10"
                 >
-                  {id === "technology"
-                    ? "Technology & care"
-                    : id === "home"
-                      ? "Home"
-                      : id === "services"
-                        ? "Services"
-                        : id === "approach"
-                          ? "Our approach"
-                          : id}
+                  {id === "home"
+                    ? "Home"
+                    : id === "services"
+                      ? "Services"
+                      : id === "approach"
+                        ? "Our approach"
+                        : id}
                 </a>
               ))}
               <Link
@@ -397,45 +393,6 @@ function Landing() {
         </div>
       </section>
 
-      <section id="technology" className="grid bg-[#edf8f3] text-[#0b302a] lg:grid-cols-2">
-        <div
-          className="min-h-[380px] bg-cover bg-center"
-          style={{ backgroundImage: "url('/images/clinic-interior.png')" }}
-          role="img"
-          aria-label="Calm dental treatment space with natural light"
-        />
-        <div className="flex items-center px-5 py-20 sm:px-8 lg:px-16">
-          <div className="max-w-[490px]">
-            <p className="text-xs font-semibold uppercase tracking-[.25em] text-[#2d9381]">
-              Technology & care
-            </p>
-            <h2 className="mt-4 text-5xl font-semibold leading-[.95] tracking-[-.06em]">
-              Modern tools. Thoughtful dental care.
-            </h2>
-            <p className="mt-6 text-base leading-7 text-[#527069]">
-              Dentriq focuses on clear communication about dental findings, organized patient
-              information, and personalized treatment planning. Technology supports the care team;
-              it does not replace the dentist.
-            </p>
-            <div className="mt-7 grid gap-3 sm:grid-cols-2">
-              {[
-                "Clear communication",
-                "Organized information",
-                "Personalized planning",
-                "Dentist-led decisions",
-              ].map((item) => (
-                <div key={item} className="flex items-center gap-2 text-sm">
-                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#b8f7e5] text-[#16866f]">
-                    <Check className="h-3 w-3" />
-                  </span>
-                  {item}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
       <section className="bg-[#071b18] px-5 py-20 text-white sm:px-8 lg:px-12 lg:py-28">
         <div className="mx-auto max-w-[1180px]">
           <div className="grid gap-3 sm:grid-cols-3">
@@ -619,9 +576,7 @@ function Landing() {
               <a href="#approach" className="hover:text-white">
                 Our approach
               </a>
-              <a href="#technology" className="hover:text-white">
-                Technology & care
-              </a>
+
               <a href="#faq" className="hover:text-white">
                 FAQ
               </a>
