@@ -206,7 +206,7 @@ function CameraRig({ preset, zoom }: { preset: ViewPreset; zoom: number }) {
       lower: [0, -8.6, 0.8],
     };
     const [x, y, z] = positions[preset];
-    const responsiveDistance = size.width < 600 ? 1.45 : 1;
+    const responsiveDistance = size.width < 600 ? 2 : 1;
     targetPosition.current.set(
       (x * responsiveDistance) / zoom,
       (y * responsiveDistance) / zoom,
@@ -337,7 +337,11 @@ export function Odontogram3D({
             Select a tooth to review its clinical record.
           </p>
         </div>
-        <div className="flex flex-wrap gap-1" role="group" aria-label="Odontogram camera view">
+        <div
+          className="grid grid-cols-2 gap-1 sm:flex"
+          role="group"
+          aria-label="Odontogram camera view"
+        >
           {presetLabels.map(([value, label]) => (
             <Button
               key={value}
